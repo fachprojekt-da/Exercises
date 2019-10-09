@@ -46,7 +46,7 @@ class RandomArrayGenerator(object):
 class PythonIntro(object):
 
     def datatypes(self, var_tup=None):
-        # print('\n[PythonIntro::datatypes]')
+        print('\n[PythonIntro::datatypes]')
 
         #
         # print('Elementare Datenstrukturen')
@@ -86,12 +86,12 @@ class PythonIntro(object):
         var2 = 23
         if var1 in var_tup:
             contains_num = True
-            print('Objekt mit dem Wert 23 ist im Tuple' + str(var_tup) + ' enthalten')
+            print('Objekt mit dem Wert 23 ist im Tuple' + str(var_tup) + ' enthalten'+ '.')
         elif var2 in var_tup:
-            print('Objekt mit dem Wert 42 ist im Tuple' + str(var_tup) + ' enthalten')
+            print('Objekt mit dem Wert 42 ist im Tuple' + str(var_tup) + ' enthalten'+ '.')
             contains_num = True
         else:
-            print('Objekt ist nicht im Tuple ' + str(var_tup) + ' enthalten')
+            print('Objekt ist nicht im Tuple ' + str(var_tup) + ' enthalten'+ '.')
             contains_num = False
 
         # raise NotImplementedError('Implement me')
@@ -112,13 +112,14 @@ class PythonIntro(object):
 
         # Im Gegensatz zu tuple ist der list Datentyp veraenderbar (mutable)
         # list
-        variable = [1, 1.0, '1.0']
-        print(type(variable))
-        variable[0] = 2
-        print(variable)
+        #variable = [1, 1.0, '1.0']
+        #print(type(variable))
+        #variable[0] = 2
+        #print(variable)
 
         # Geben Sie nun das Ergebnis, aus der if-Abfrage oben, als Ergebnis mit
         # return zurueck
+        print('Der boolsche Wert für die Ausgabe ist also: ' + str(contains_num) + '!')
         return contains_num
         # raise NotImplementedError('Implement me')
 
@@ -148,16 +149,20 @@ class PythonIntro(object):
         first_list = []
         length = len(test_list)
         first_list.append(length)
+        print('Die Anzahl der Elemente in der Liste lautet:' + str(first_list))
 
         first_elem = test_list[0]
         first_list.append(first_elem)
+        print('Das erste Element ist die : ' + str(first_list[1]))
 
         last_elem = test_list[-1]
         first_list.append(last_elem)
+        print('Das letzte Element ist die : ' + str(first_list[2]))
 
         second_last_elem = test_list[-2]
         last_two_elems = [second_last_elem, last_elem]
         first_list.append(last_two_elems)
+        print('Die zwei letzten Elemente sind : ' + str(first_list[3]))
 
         stop_of_first_third = int(length / 3)
         stop_of_second_third = int(stop_of_first_third * 2)
@@ -167,8 +172,11 @@ class PythonIntro(object):
         last_third = test_list[stop_of_second_third::]
 
         first_list.append(first_third)
+        print('Das erste drittel der Liste : ' + str(first_list[4]))
         first_list.append(second_third)
+        print('Das zweite drittel der Liste : ' + str(first_list[5]))
         first_list.append(last_third)
+        print('Das letzte drittel der Liste : ' + str(first_list[6]))
 
         #
         # https://docs.python.org/2/tutorial/introduction.html#lists
