@@ -3,8 +3,9 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 from operator import itemgetter
 
+
 class RandomArrayGenerator(object):
-    
+
     def __init__(self, seed=None):
         """ Initialisiert den Zufallsgenerator
         Params:
@@ -12,7 +13,7 @@ class RandomArrayGenerator(object):
         """
         if seed is not None:
             np.random.seed(seed)
-    
+
     def rand_uniform(self, arr_shape, min_elem=0, max_elem=1):
         """ Generiert eine Liste mit gleichverteilten Zufallszahlen
         Params:
@@ -25,7 +26,7 @@ class RandomArrayGenerator(object):
         rand_arr = np.random.rand(*arr_shape)
         rand_arr = min_elem + rand_arr * (max_elem - min_elem)
         return rand_arr
-            
+
     def rand_gauss(self, arr_shape, mean=0, std_deviation=1):
         """ Generiert eine Liste mit normalverteilten Zufallszahlen
         Params:
@@ -40,34 +41,34 @@ class RandomArrayGenerator(object):
         rand_arr = np.random.randn(*arr_shape)
         rand_arr = mean + rand_arr * std_deviation
         return rand_arr
-    
-    
+
+
 class PythonIntro(object):
 
     def datatypes(self, var_tup=None):
-        print('\n[PythonIntro::datatypes]')
+        # print('\n[PythonIntro::datatypes]')
 
         #
-        print('Elementare Datenstrukturen')
+        # print('Elementare Datenstrukturen')
         #
         # Variablen sind dynamisch getypt
 
         # Int
         variable = 1
-        print(type(variable))
+        # print(type(variable))
 
         # Float
         variable = 1.0
-        print(type(variable))
+        # print(type(variable))
 
         # string
         variable = '1.0'
-        print(type(variable))
+        # print(type(variable))
 
-        print('\nDatenstrukturen fuer Sequenzen')
+        # print('\nDatenstrukturen fuer Sequenzen')
         # tuple
         variable = (1, 1.0, '1.0')
-        print(type(variable))
+        # print(type(variable))
 
         if var_tup is None:
             var_tup = variable
@@ -84,13 +85,13 @@ class PythonIntro(object):
         var1 = 42
         var2 = 23
         if var1 in var_tup:
-            print(True)
             contains_num = True
+            print('Objekt mit dem Wert 23 ist im Tuple' + str(var_tup) + ' enthalten')
         elif var2 in var_tup:
-            print(True)
+            print('Objekt mit dem Wert 42 ist im Tuple' + str(var_tup) + ' enthalten')
             contains_num = True
         else:
-            print(False)
+            print('Objekt ist nicht im Tuple ' + str(var_tup) + ' enthalten')
             contains_num = False
 
         # raise NotImplementedError('Implement me')
@@ -103,13 +104,13 @@ class PythonIntro(object):
         # Weil sicher gestellt ist, dass die Werte im container nicht modifiziert werden können und
         # somit keine unerwarteten Nebeneffekte auftreten
 
-        try:
-            variable[0] = 2
-        except TypeError as err:
-            print('Damit haben wir gerechnet...')
-            print(err)
+        # try:
+        #    variable[0] = 2
+        # except TypeError as err:
+        #    print('Damit haben wir gerechnet...')
+        #    print(err)
 
-            # Im Gegensatz zu tuple ist der list Datentyp veraenderbar (mutable)
+        # Im Gegensatz zu tuple ist der list Datentyp veraenderbar (mutable)
         # list
         variable = [1, 1.0, '1.0']
         print(type(variable))
@@ -236,7 +237,7 @@ class PythonIntro(object):
         #
         # Konstruieren Sie einen string, den Sie am Ende ausgeben. Zwei strings lassen
         # sich mit + konkatenieren. SEHR SCHLECHTER STIL (siehe unten).
-    
+
         raise NotImplementedError('Implement me')
 
         #
@@ -263,11 +264,11 @@ class PythonIntro(object):
         # [ <type, value>, <type, value>, ..., <type, value> ]
         # fuer das test_seq Objekt. Verwenden Sie dabei den % Operator sowie die join Methode.
         # Achten Sie dabei auch auf Leerzeichen und Kommata.
-        
+
         # Geben Sie diesen string als Ergebnis der Methode zurueck.  
-    
+
         raise NotImplementedError('Implement me')
-    
+
     def list_comprehension(self, test_seq=(1, 1.0, '1.0')):
         print('\n[PythonIntro::list_comprehension]')
         #
@@ -287,9 +288,9 @@ class PythonIntro(object):
         # Verwenden Sie diese Liste mit einer list comprehension, um wieder eine Liste
         # von strings der Form <obj_type_name, obj> zu erzeugen. Das Ergbnis koennen 
         # Sie dann wieder mit string.join() erzeugen und dann mit print ausgeben.
-    
+
         raise NotImplementedError('Implement me')
-        
+
         # Ersetzen Sie nun die eckigen Klammern Ihrer list comprehension durch runde Klammern.
         # Dabei erzeugen Sie einen Generator. Ein Generator erzeugt die Sequenz von Daten nicht
         # sofort, sondern nur nach Anfrage. Dies kann bei der Erzeugung von sehr langen Sequenzen
@@ -298,11 +299,11 @@ class PythonIntro(object):
         # auf list comprehensions oder Generatoren setzen. Fuer kuerzere Sequenzen, koennen sie
         # jedoch nuetzlich sein und bieten eine kompakte Syntax.
         # https://docs.python.org/3/glossary.html#term-generator-expression
-        
+
         # Geben Sie das Generator Objekt als Ergebnis der Methode zurueck.
-        
+
         raise NotImplementedError('Implement me')
-    
+
     def dictionaries(self, rand_list=None):
         print('\n[PythonIntro::dictionaries]')
         #
@@ -340,11 +341,11 @@ class PythonIntro(object):
         # um aus dem Dictionary eine Liste mit Schluessel-Wert tuple Objekten zu
         # erzeugen.
         # https://docs.python.org/3/howto/sorting.html#sortinghowto
-    
+
         hist = {}
         print(type(hist))
         raise NotImplementedError('Implement me')
-    
+
         # Ein fuer die Berechnung von Histogrammen besser geeignetes Dictionary bietet
         # das defaultdict
         # https://docs.python.org/3/library/collections.html#collections.defaultdict
@@ -375,13 +376,12 @@ class PythonIntro(object):
 
         # Geben Sie das defaultdict Objekt sowie den Schluessel zum groessten Wert
         # als Ergebnis der Methode zurueck.
-        
+
         raise NotImplementedError('Implement me')
-          
 
 
 class NumPyIntro(object):
-    
+
     #
     # SciPy / NumPy
     #
@@ -389,7 +389,7 @@ class NumPyIntro(object):
     # http://www.scipy.org/docs.html
     # http://www.numpy.org/
     # https://docs.scipy.org/doc/numpy-dev/user/quickstart.html
-    
+
     # Sehr grosse Datenmengen, lassen sich iterativ nicht effizient in Python
     # verarbeiten. Dazu gibt es mit NumPy / SciPy eine Bibliothek, mit der 
     # numerische Berechnungen vektorisiert effizient durchgefuehrt werden koennen.
@@ -404,8 +404,7 @@ class NumPyIntro(object):
     # VERWENDEN SIE BEI *KEINER* DER FOLGENDEN AUFGABEN SCHLEIFEN!
     # ------------------------------------------------------------
     #
-    
-    
+
     def arrays(self, test_arr=None):
         print('\n[NumPyIntro::arrays]')
         # Elementare Datenstruktur ist das ndarray. Ein Array hat dabei eine 
@@ -423,7 +422,7 @@ class NumPyIntro(object):
         #
         # Bei der Initialisierung von ndarrays mit Listen lassen sich weitere
         # Dimensionen durch Listen von Listen darstellen:
-        arr = np.array([[1, 2], [3, 4], [5, 6]]) 
+        arr = np.array([[1, 2], [3, 4], [5, 6]])
         print(arr)
         print('ndim: %d' % arr.ndim)
         print('shape: (%d, %d)' % arr.shape)
@@ -434,14 +433,14 @@ class NumPyIntro(object):
         print('Spalten: %d' % arr.shape[1])
         if test_arr is None:
             test_arr = arr
-        
+
         # Es gibt auch Funktionen um Arrays mit einer bestimmten Struktur und
         # einem initialen Wert zu erstellen. Zum Beispiel mit Nullen oder Einsen.
         # http://docs.scipy.org/doc/numpy/reference/generated/numpy.zeros.html
         # http://docs.scipy.org/doc/numpy/reference/generated/numpy.ones.html
         zeros_arr = np.zeros((3, 3))
         print(zeros_arr)
-        
+
         # Die Struktur eines ndarray koennen Sie mit reshape aendern
         # http://docs.scipy.org/doc/numpy/reference/generated/numpy.reshape.html
         # 
@@ -452,10 +451,10 @@ class NumPyIntro(object):
         #
         # Verwenden Sie die numpy Funkionen reshape und arange. Speichern Sie 
         # das Ergebnis in der Variable arr.
-        
+
         arr = None
         raise NotImplementedError('Implement me')
-        
+
         # Mit reshape koennen Arrays mit mehreren Dimensionen auch linearisieren
         # Dabei muessen Sie beachten, ob entlang der Zeilen oder Spalten linearisiert
         # wird. 
@@ -472,40 +471,37 @@ class NumPyIntro(object):
         #
         # Geben Sie die Ergebnisse aus. Die Variablen werden als Ergebnis der
         # Funktion zurueckgegeben. 
-   
-        arr_lin_rows = None 
+
+        arr_lin_rows = None
         arr_lin_cols = None
 
         raise NotImplementedError('Implement me')
 
-        
         return arr, arr_lin_rows, arr_lin_cols
-        
-    
+
     def array_access(self, seq_arr=None):
         print('\n[NumPyIntro::array_access]')
 
         # Im folgenden schauen wir uns Zugriffsfunktionen fuer ndarrays an.
-    
+
         if seq_arr is None:
             seq_arr = np.arange(100).reshape(10, 10)
-    
+
         print(seq_arr.shape)
         print(seq_arr)
-        
+
         # Geben Sie das Element in der dritten Zeile und fuenften Spalte als
         # Ergebnis der Funktion zurueck. Zusaetzlich koennen Sie das Ergebnis
         # ausgeben.
         #
         # Hinweis: Schauen Sie sich dazu auch das Numpy Quickstart Tutorial an:
         # https://docs.scipy.org/doc/numpy/user/quickstart.html#indexing-slicing-and-iterating
-        
+
         raise NotImplementedError('Implement me')
-        
-        
+
     def array_slicing(self, seq_arr=None):
         print('\n[NumPyIntro::array_slicing]')
-    
+
         if seq_arr is None:
             seq_arr = np.arange(100).reshape(10, 10)
         # Slicing: 
@@ -519,28 +515,28 @@ class NumPyIntro(object):
         # 
         # Hinweis: Schauen Sie sich dazu auch das Numpy Quickstart Tutorial an:
         # https://docs.scipy.org/doc/numpy/user/quickstart.html#indexing-slicing-and-iterating
-    
+
         raise NotImplementedError('Implement me')
-    
+
     def array_indexing(self, seq_arr=None):
         print('\n[NumPyIntro::array_indexing]')
-    
+
         if seq_arr is None:
             seq_arr = np.arange(100).reshape(10, 10)
-            
+
         # Integer Array Indexing:
         # Um auf mehrere Elemente zuzugreifen sind Index Arrays hilfreich.
         # Dabei wird eine Menge gewuenschter Array Elemente direkt durch ihre 
         # Index Positionen angesprochen.
         # http://docs.scipy.org/doc/numpy/reference/arrays.indexing.html#integer-array-indexing
-        
+
         #    Geben Sie die Elemente (1,3), (2,1), (3,1) mit Hilfe von Index
         #        Arrays aus.  
         #    Index arrays lassen sich auch mit Slicing Operationen kombinieren
         #        Geben Sie alle Zeilen und die Spalten mit Index 2,3,6 aus.
-        
+
         raise NotImplementedError('Implement me')
-        
+
         # Boolean Indexing:
         # Boolsche Index Arrays funktionieren als Masken, bei der an jeder Array
         # Position ein boolscher Wert gespeichert ist, der angibt ob, das 
@@ -557,18 +553,18 @@ class NumPyIntro(object):
         #         http://docs.scipy.org/doc/numpy/reference/generated/numpy.logical_and.html
 
         raise NotImplementedError('Implement me')
-        
+
         # Speichern Sie die vier Egebnisse jeweils in ein Array und geben Sie diese 
         # als Ergebnis der Funktion zurueck.
 
         raise NotImplementedError('Implement me')
-    
+
     def array_operations(self, seq_arr=None):
         print('\n[NumPyIntro::array_operations]')
 
         if seq_arr is None:
             seq_arr = np.arange(100).reshape(10, 10)
-    
+
         # Mathematische Operation auf Arrays werden in erster Linie elementweise
         # durchgefuehrt. Fuer eine Matrixmultiplikation, also fuer Skalarprodukte,
         # verwendet man die dot Funktion.
@@ -581,7 +577,7 @@ class NumPyIntro(object):
         # http://docs.scipy.org/doc/numpy/reference/generated/numpy.dot.html
 
         raise NotImplementedError('Implement me')
-        
+
         # Speichern Sie alle Ergebnisse und geben Sie diese als Ergebnis der
         # Funktion zurueck.
 
@@ -595,18 +591,18 @@ class NumPyIntro(object):
         #
         # Nun schauen wir uns noch einige wichtige NumPy Funktionen an.
         #
-        
+
         # Bestimmen Sie in dem ndarray seq_arr in jeder Zeile das groesste Element
         # und seinen Index. Geben Sie die Ergbnisse aus. Speichern Sie das Array
         # mit Indices gefolgt von dem Array mit Werten in einem Tuple.
         # http://docs.scipy.org/doc/numpy/reference/generated/numpy.amax.html
         # http://docs.scipy.org/doc/numpy/reference/generated/numpy.argmax.html
-        
+
         raise NotImplementedError('Implement me')
-        
+
         # Bestimmen Sie die Summen ueber die Elemente jeder Zeile.
         # Speichern Sie das Ergebnis in einer Variable.
-        
+
         raise NotImplementedError('Implement me')
 
         # Teilen Sie nun jedes Element des Arrays durch die Summe der entsprechenden
@@ -624,7 +620,7 @@ class NumPyIntro(object):
         #
         # Geben Sie die Zwischenergebnisse aus und inspizieren Sie diese auch
         # mit dem Debugger.
-        
+
         raise NotImplementedError('Implement me')
 
         # Speichern Sie alle Ergebnisse und geben Sie diese als Ergebnis der
@@ -640,12 +636,12 @@ class NumPyIntro(object):
         #
         # Die folgenden Arrays enthalten normalverteilte und gleichverteilte Zufalls-
         # zahlen.
-   
+
         rand_arr_gen = RandomArrayGenerator()
 
         rand_arr_gauss = rand_arr_gen.rand_gauss(arr_shape=(10000,), mean=50, std_deviation=10)
         rand_arr_unif = rand_arr_gen.rand_uniform(arr_shape=(10000, 50), min_elem=0.5, max_elem=10.5)
-    
+
         # Runden Sie die Elemente der Arrays (ganzzahlig) und erstellen sie jeweils 
         # Histogramme. Um das Histogramm fuer rand_arr_unif zu erstellen, linearisieren
         # Sie die Matrix zunaechst. (Verwenden Sie reshape mit shape Parameter -1.)
@@ -659,9 +655,9 @@ class NumPyIntro(object):
         # http://docs.scipy.org/doc/numpy/reference/generated/numpy.around.html
         # http://docs.scipy.org/doc/numpy/reference/generated/numpy.bincount.html
         # http://docs.scipy.org/doc/numpy/reference/generated/numpy.reshape.html
-    
+
         raise NotImplementedError('Implement me')
-    
+
         # Bilden Sie nun die zeilenweisen Summen ueber das ndarray mit den gleichverteilten
         # Zufallszahlen (rand_arr_unif). Berechnen und visualisieren Sie das Histogramm 
         # wie zuvor. Erklaeren Sie das Ergebnis.
@@ -670,7 +666,6 @@ class NumPyIntro(object):
         # Geben Sie das Ergebnis als Rueckgabe der Funktion zurueck.
 
         raise NotImplementedError('Implement me')
-        
 
 
 def bar_plot(x_values, y_values, title=None):
@@ -682,7 +677,7 @@ def bar_plot(x_values, y_values, title=None):
         title: Ueberschrift des Plots
     """
     x_pos = np.arange(len(y_values))
-    
+
     # plt.figure() erzeugt ein Figure-Objekt. Eine Figure ist ein Container, der
     # die Plot-Elemente enthaelt.
     #
@@ -698,7 +693,7 @@ def bar_plot(x_values, y_values, title=None):
     # Siehe auch:
     # http://matplotlib.org/api/figure_api.html
     # http://matplotlib.org/api/axes_api.html
-    
+
     fig = plt.figure()
     ax = fig.add_subplot(111)
     ax.bar(x_pos, y_values, width=0.9, align='center', alpha=0.4)
@@ -708,9 +703,9 @@ def bar_plot(x_values, y_values, title=None):
     if title is not None:
         ax.set_title(title)
     plt.show()
-    
+
+
 def intro():
-    
     #
     print('Willkommen beim Fachprojekt Dokumentenanalyse!')
     #
@@ -737,14 +732,14 @@ def intro():
     # vorgesehnen Loesungen mit der Aufgabenstellung in Beziehung gebracht werden
     # koennen.
     # Lesen Sie die Aufgabenstellung in solchen Faellen nochmals sehr genau! 
-    
+
     py_intro = PythonIntro()
     py_intro.datatypes()
     py_intro.sequences()
     py_intro.sequences_complex()
     py_intro.list_comprehension()
     py_intro.dictionaries()
-    
+
     np_intro = NumPyIntro()
     np_intro.arrays()
     np_intro.array_access()
@@ -753,7 +748,7 @@ def intro():
     np_intro.array_operations()
     np_intro.array_functions()
     np_intro.array_distributions()
-    
-    
+
+
 if __name__ == '__main__':
     intro()
