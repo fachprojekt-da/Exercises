@@ -176,7 +176,7 @@ class PythonIntro(object):
         first_list.append(second_third)
         print('Das zweite drittel der Liste : ' + str(first_list[5]))
         first_list.append(last_third)
-        print('Das letzte drittel der Liste : ' + str(first_list[6]))
+        print('Das letzte drittel der Liste : ' + str(first_list[-1]))
 
         #
         # https://docs.python.org/2/tutorial/introduction.html#lists
@@ -196,6 +196,7 @@ class PythonIntro(object):
         # koennen Sie eine for Schleife verwenden.
         # https://docs.python.org/2/tutorial/controlflow.html
         # Geben Sie die Elemente von test_list einzeln in einer for-Schleife aus.
+        print('Die Gesamte Liste hat den Inhalt: ')
         for val in test_list:
             print(val)
         #
@@ -211,7 +212,9 @@ class PythonIntro(object):
         # Hinweis: Verwenden Sie GENAU den oben angegebenen Formartierungs-String
         # '%d: %d '. Achten Sie auf die Leerzeichen.
         list_of_strings = []
-        for index, value in enumerate(test_list):
+        print('Die Gesamte Liste mit Indexangabe: ')
+        enumerate_test_list = enumerate(test_list)
+        for index, value in enumerate_test_list:
             content = '%d: %d ' % (index, value)
             list_of_strings.append(content)
             print(content)
@@ -227,7 +230,7 @@ class PythonIntro(object):
         # Tupel behandelt werden:
         return first_list, list_of_strings
 
-        raise NotImplementedError('Implement me')
+       # raise NotImplementedError('Implement me')
 
     def sequences_complex(self, test_seq=(1, 1.0, '1.0')):
         print('\n[PythonIntro::sequences_complex]')
