@@ -248,8 +248,17 @@ class PythonIntro(object):
         #
         # Konstruieren Sie einen string, den Sie am Ende ausgeben. Zwei strings lassen
         # sich mit + konkatenieren. SEHR SCHLECHTER STIL (siehe unten).
-
-        raise NotImplementedError('Implement me')
+        print('Test' + str(test_seq))
+        seq_ausgabe = '[ '
+        for val in test_seq:
+            type_val_str = '<%s, %s>' % (type(val).__name__, str(val))
+            seq_ausgabe += type_val_str
+            if test_seq.index(val) != len(test_seq)-1:
+                seq_ausgabe += ','
+            seq_ausgabe += ' '
+        seq_ausgabe += ']'
+        print('Test' + str(seq_ausgabe))
+        # raise NotImplementedError('Implement me')
 
         #
         # Leider ist das Konkatenieren von strings mit + wahnsinnig ineffizient. Da
@@ -277,8 +286,21 @@ class PythonIntro(object):
         # Achten Sie dabei auch auf Leerzeichen und Kommata.
 
         # Geben Sie diesen string als Ergebnis der Methode zurueck.  
-
-        raise NotImplementedError('Implement me')
+        string_list = list()
+        index = 0
+        lastindex = len(test_seq)-1
+        string_list.append('[')
+        for val in test_seq:
+            if index == lastindex:
+                type_val_str = '<%s, %s> ]' % (type(val).__name__, str(val))
+            else:
+                type_val_str = '<%s, %s>,' % (type(val).__name__, str(val))
+            string_list.append(type_val_str)
+            index += 1
+        resultstring = ' '.join(string_list)
+        print(resultstring)
+        return resultstring
+        #raise NotImplementedError('Implement me')
 
     def list_comprehension(self, test_seq=(1, 1.0, '1.0')):
         print('\n[PythonIntro::list_comprehension]')
@@ -300,7 +322,14 @@ class PythonIntro(object):
         # von strings der Form <obj_type_name, obj> zu erzeugen. Das Ergbnis koennen 
         # Sie dann wieder mit string.join() erzeugen und dann mit print ausgeben.
 
-        raise NotImplementedError('Implement me')
+        type_list = [type(x).__name__ for x in test_seq]
+        print(type_list)
+        zip_list = list(zip(type_list, test_seq))
+        print(zip_list)
+        result_list = ['<%s, %s>' % (type_name, str(val)) for type_name, val in zip_list]
+        print(result_list)
+        print(', '.join(result_list))
+        #raise NotImplementedError('Implement me')
 
         # Ersetzen Sie nun die eckigen Klammern Ihrer list comprehension durch runde Klammern.
         # Dabei erzeugen Sie einen Generator. Ein Generator erzeugt die Sequenz von Daten nicht
@@ -313,7 +342,8 @@ class PythonIntro(object):
 
         # Geben Sie das Generator Objekt als Ergebnis der Methode zurueck.
 
-        raise NotImplementedError('Implement me')
+        generator_list = ('<%s, %s>' % (type_name, str(val)) for type_name, val in zip_list)
+        return generator_list
 
     def dictionaries(self, rand_list=None):
         print('\n[PythonIntro::dictionaries]')
@@ -334,7 +364,6 @@ class PythonIntro(object):
         # https://docs.python.org/3/tutorial/controlflow.html#default-argument-values
         # Bei obigem Funktionsaufruf wurden Keyword-Argumente verwendet.
         # https://docs.python.org/3/tutorial/controlflow.html#keyword-arguments
-        #
         # Verwenden Sie nun eine list comprehension, um die Elemente der Liste rand_list
         # ganzzahlig zu runden und zu einem int zu konvertieren.
         # https://docs.python.org/3/library/functions.html#round
@@ -353,9 +382,22 @@ class PythonIntro(object):
         # erzeugen.
         # https://docs.python.org/3/howto/sorting.html#sortinghowto
 
-        hist = {}
-        print(type(hist))
-        raise NotImplementedError('Implement me')
+        print(rand_list)
+        dic_list = [int(round(val)) for val in rand_list]
+        print(dic_list)
+        val_dict = {}
+        for val in dic_list:
+            if val in val_dict.keys():
+                val_dict[val] += 1
+            else:
+                val_dict[val] = 1
+        print(val_dict)
+        sorted_dict = sorted(val_dict)
+        print(sorted_dict)
+        keyvalue_list = [(key, val_dict[key]) for key in sorted_dict]
+        print('keyvaluelist ' + str(keyvalue_list))
+
+        #raise NotImplementedError('Implement me')
 
         # Ein fuer die Berechnung von Histogrammen besser geeignetes Dictionary bietet
         # das defaultdict
