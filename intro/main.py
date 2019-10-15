@@ -410,9 +410,16 @@ class PythonIntro(object):
         # der oben genannten Webseite an.
         #
         # Berechnen Sie nun das Histogramm ueber die gerundeten Werte aus rand_list 
-        # mit einem defaultdict. 
+        # mit einem defaultdict.
 
-        raise NotImplementedError('Implement me')
+        print('Die gerundeten Werte: ' + str(dic_list))
+        val2_dict = defaultdict(int)
+        for val in dic_list:
+            if val in val_dict.keys():
+                val2_dict[val] += 1
+        print('Ausgabe der random Liste mit defaultdict' + str(val2_dict))
+
+        # raise NotImplementedError('Implement me')
 
         # Wenn man ermitteln moechte, welcher Schluessel in einer gegebenen Menge
         # von Werten am haeufigsten ist, muss man in dem Histogramm den Schluessel zu
@@ -425,12 +432,17 @@ class PythonIntro(object):
         # Hinweis: Sie koennen dazu die itemgetter Funktion als key Funktion verwenden.
         # https://docs.python.org/3/howto/sorting.html#key-functions
 
-        raise NotImplementedError('Implement me')
+        sortedValue_dict = sorted(val2_dict.items(), key=itemgetter(1))
+        print('Sortierte Liste nach Wert ' + str(sortedValue_dict))
+        biggestValue = sortedValue_dict[-1]
+        print('Key-Ausgabe des größten Werts: ' + str(biggestValue[0]))
+
+        #raise NotImplementedError('Implement me')
 
         # Geben Sie das defaultdict Objekt sowie den Schluessel zum groessten Wert
         # als Ergebnis der Methode zurueck.
-
-        raise NotImplementedError('Implement me')
+        return val2_dict, biggestValue[0]
+        #raise NotImplementedError('Implement me')
 
 
 class NumPyIntro(object):
@@ -505,8 +517,13 @@ class NumPyIntro(object):
         # Verwenden Sie die numpy Funkionen reshape und arange. Speichern Sie 
         # das Ergebnis in der Variable arr.
 
-        arr = None
-        raise NotImplementedError('Implement me')
+        arr = np.arange(5, 17)
+        print('Array ' + str(arr))
+        arr = arr.reshape((4, 3))
+        print('Array ' + str(arr))
+
+
+        #raise NotImplementedError('Implement me')
 
         # Mit reshape koennen Arrays mit mehreren Dimensionen auch linearisieren
         # Dabei muessen Sie beachten, ob entlang der Zeilen oder Spalten linearisiert
@@ -523,12 +540,15 @@ class NumPyIntro(object):
         #  - Schauen Sie sich den Parameter order genau an. 
         #
         # Geben Sie die Ergebnisse aus. Die Variablen werden als Ergebnis der
-        # Funktion zurueckgegeben. 
+        # Funktion zurueckgegeben.
 
-        arr_lin_rows = None
-        arr_lin_cols = None
+        print('Array test_arr ' + str(test_arr))
+        arr_lin_rows = np.reshape(test_arr, -1, order='C')
+        print('Array linearisiert nach Zeile ' + str(arr_lin_rows))
+        arr_lin_cols = np.reshape(test_arr, -1, order='F')
+        print('Array linearisiert nach Spalte ' + str(arr_lin_cols))
 
-        raise NotImplementedError('Implement me')
+        #raise NotImplementedError('Implement me')
 
         return arr, arr_lin_rows, arr_lin_cols
 
@@ -549,8 +569,9 @@ class NumPyIntro(object):
         #
         # Hinweis: Schauen Sie sich dazu auch das Numpy Quickstart Tutorial an:
         # https://docs.scipy.org/doc/numpy/user/quickstart.html#indexing-slicing-and-iterating
-
-        raise NotImplementedError('Implement me')
+        print('Element (3,5) = ' + str(seq_arr[2, 4]))
+        #raise NotImplementedError('Implement me')
+        return seq_arr[2, 4]
 
     def array_slicing(self, seq_arr=None):
         print('\n[NumPyIntro::array_slicing]')
@@ -568,6 +589,15 @@ class NumPyIntro(object):
         # 
         # Hinweis: Schauen Sie sich dazu auch das Numpy Quickstart Tutorial an:
         # https://docs.scipy.org/doc/numpy/user/quickstart.html#indexing-slicing-and-iterating
+        topmatrix = seq_arr[0:3, 0:2]
+        print(topmatrix)
+        undergroundmatrix = seq_arr[7:10, 7:10]
+        print(undergroundmatrix)
+        fourthrowmatrix = seq_arr[3, :]
+        print(fourthrowmatrix)
+        oddcolmatrix = seq_arr[:, 0::2]
+        print(oddcolmatrix)
+
 
         raise NotImplementedError('Implement me')
 
