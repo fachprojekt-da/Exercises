@@ -578,28 +578,30 @@ class NumPyIntro(object):
 
         if seq_arr is None:
             seq_arr = np.arange(100).reshape(10, 10)
-        # Slicing: 
-        #    Geben Sie die obere (3,2) Matrix und die untere (3,3) Matrix aus.
-        #    Geben Sie die 4. Zeile aus.
-        #    Geben Sie die jede ungerade Spalte aus, also Spalten 1,3,.. Verwenden 
-        #        sie dabei slicing mit step=2.
-        #
-        # Speichern Sie alle Zwischenergebnisse in Variablen und geben Sie diese
-        # aus und in der genannten Reihenfolge als Ergebnis der Funktion zurueck.
-        # 
+        # Slicing:
         # Hinweis: Schauen Sie sich dazu auch das Numpy Quickstart Tutorial an:
         # https://docs.scipy.org/doc/numpy/user/quickstart.html#indexing-slicing-and-iterating
-        topmatrix = seq_arr[0:3, 0:2]
-        print(topmatrix)
-        undergroundmatrix = seq_arr[7:10, 7:10]
-        print(undergroundmatrix)
-        fourthrowmatrix = seq_arr[3, :]
-        print(fourthrowmatrix)
-        oddcolmatrix = seq_arr[:, 0::2]
-        print(oddcolmatrix)
 
+        #    Geben Sie die obere (3,2) Matrix und die untere (3,3) Matrix aus.
+        top_matrix = seq_arr[0:3, 0:2]
+        print(top_matrix)
+        bottom_matrix = seq_arr[7:10, 7:10]
+        print(bottom_matrix)
 
-        raise NotImplementedError('Implement me')
+        #    Geben Sie die 4. Zeile aus.
+        fourth_row_matrix = seq_arr[3, :]
+        print(fourth_row_matrix)
+
+        #    Geben Sie die jede ungerade Spalte aus, also Spalten 1,3,.. Verwenden
+        #        sie dabei slicing mit step=2.
+        every_odd_col_matrix = seq_arr[:, 0::2]
+        print(every_odd_col_matrix)
+
+        # Speichern Sie alle Zwischenergebnisse in Variablen und geben Sie diese
+        # aus und in der genannten Reihenfolge als Ergebnis der Funktion zurueck.
+        return top_matrix, bottom_matrix, fourth_row_matrix, every_odd_col_matrix
+
+        #raise NotImplementedError('Implement me')
 
     def array_indexing(self, seq_arr=None):
         print('\n[NumPyIntro::array_indexing]')
@@ -614,11 +616,18 @@ class NumPyIntro(object):
         # http://docs.scipy.org/doc/numpy/reference/arrays.indexing.html#integer-array-indexing
 
         #    Geben Sie die Elemente (1,3), (2,1), (3,1) mit Hilfe von Index
-        #        Arrays aus.  
-        #    Index arrays lassen sich auch mit Slicing Operationen kombinieren
-        #        Geben Sie alle Zeilen und die Spalten mit Index 2,3,6 aus.
+        #        Arrays aus.
+        rows = np.array([1, 2, 3], dtype=np.intp)
+        columns = np.array([3, 1, 1], dtype=np.intp)
+        three_elements_array = seq_arr[rows, columns]
+        print(three_elements_array)
 
-        raise NotImplementedError('Implement me')
+        #    Index arrays lassen sich auch mit Slicing Operationen kombinieren
+        #    Geben Sie alle Zeilen und die Spalten mit Index 2,3,6 aus.
+        index_array_cols = np.array([2,3,6])
+        two_three_six_column_array = seq_arr[:, index_array_cols]
+        print(two_three_six_column_array)
+        #raise NotImplementedError('Implement me')
 
         # Boolean Indexing:
         # Boolsche Index Arrays funktionieren als Masken, bei der an jeder Array
@@ -630,17 +639,23 @@ class NumPyIntro(object):
         #
         # Die folgenden beiden Aufgaben bauen aufeinander auf:
         #     Setzen Sie nun alle ungeraden Elemente des ndarray seq_arr auf 0 
-        #         und geben Sie das Ergebnis aus. 
+        #         und geben Sie das Ergebnis aus.
+        odd_nums_to_zero_array = seq_arr
+        odd_nums_to_zero_array[seq_arr % 2 != 0] = 0
+        print('All odd values to zero:')
+        print(odd_nums_to_zero_array)
         #     Geben Sie dann alle Elemente zurueck die groesser als 17 und 
         #         ganzzahlig durch drei teilbar sind.
         #         http://docs.scipy.org/doc/numpy/reference/generated/numpy.logical_and.html
+        greater_seventeen_and_mod_three_array = odd_nums_to_zero_array[(odd_nums_to_zero_array > 17) & (odd_nums_to_zero_array % 3 == 0)]
+        print('All odd values to zero:')
+        print(greater_seventeen_and_mod_three_array)
 
-        raise NotImplementedError('Implement me')
-
+        #raise NotImplementedError('Implement me')
         # Speichern Sie die vier Egebnisse jeweils in ein Array und geben Sie diese 
         # als Ergebnis der Funktion zurueck.
-
-        raise NotImplementedError('Implement me')
+        return three_elements_array, two_three_six_column_array, odd_nums_to_zero_array, greater_seventeen_and_mod_three_array
+        #raise NotImplementedError('Implement me')
 
     def array_operations(self, seq_arr=None):
         print('\n[NumPyIntro::array_operations]')
@@ -654,17 +669,21 @@ class NumPyIntro(object):
         #
         # Fuehren Sie die folgenden Opertionen auf dem Array seq_arr durch.
         #    Geben Sie die Summe der ersten beiden Zeilen aus (elementweise).
+        sum_of_first_two_rows = sum(seq_arr[:2, :])
+        print(sum_of_first_two_rows)
         #    Geben Sie das Produkt der ersten beiden Zeilen aus (elementweise).
+        product_of_first_two_rows = np.multiply(seq_arr[0], seq_arr[1])
         #    Geben Sie das Skalarprodukt der ersten beiden Zeilen aus.
+        dot_product_of_first_two_rows = np.dot(seq_arr[0], seq_arr[1])
         # Verwenden Sie dazu die Operatorn +, *  und np.dot in geeigneter Weise
         # http://docs.scipy.org/doc/numpy/reference/generated/numpy.dot.html
 
-        raise NotImplementedError('Implement me')
+        #raise NotImplementedError('Implement me')
 
         # Speichern Sie alle Ergebnisse und geben Sie diese als Ergebnis der
         # Funktion zurueck.
-
-        raise NotImplementedError('Implement me')
+        return sum_of_first_two_rows, product_of_first_two_rows, dot_product_of_first_two_rows
+        #raise NotImplementedError('Implement me')
 
     def array_functions(self, seq_arr=None):
         print('\n[NumPyIntro::array_functions]')
