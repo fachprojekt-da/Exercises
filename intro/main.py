@@ -585,7 +585,7 @@ class NumPyIntro(object):
         #    Geben Sie die obere (3,2) Matrix und die untere (3,3) Matrix aus.
         top_matrix = seq_arr[0:3, 0:2]
         print(top_matrix)
-        bottom_matrix = seq_arr[7:10, 7:10]
+        bottom_matrix = seq_arr[-3:, -3:]
         print(bottom_matrix)
 
         #    Geben Sie die 4. Zeile aus.
@@ -594,7 +594,7 @@ class NumPyIntro(object):
 
         #    Geben Sie die jede ungerade Spalte aus, also Spalten 1,3,.. Verwenden
         #        sie dabei slicing mit step=2.
-        every_odd_col_matrix = seq_arr[:, 0::2]
+        every_odd_col_matrix = seq_arr[:, 1::2]
         print(every_odd_col_matrix)
 
         # Speichern Sie alle Zwischenergebnisse in Variablen und geben Sie diese
@@ -699,13 +699,24 @@ class NumPyIntro(object):
         # mit Indices gefolgt von dem Array mit Werten in einem Tuple.
         # http://docs.scipy.org/doc/numpy/reference/generated/numpy.amax.html
         # http://docs.scipy.org/doc/numpy/reference/generated/numpy.argmax.html
+        max_element_per_row = np.amax(seq_arr, axis=1)
+        print('Maximum per row: ')
+        print(max_element_per_row)
 
-        raise NotImplementedError('Implement me')
+        indices_of_max = np.argmax(seq_arr, axis=1)
+        print('Indices of maximum per row: ')
+        print(indices_of_max)
+        indices_and_values = indices_of_max, max_element_per_row
+
+        #raise NotImplementedError('Implement me')
 
         # Bestimmen Sie die Summen ueber die Elemente jeder Zeile.
         # Speichern Sie das Ergebnis in einer Variable.
+        sums_of_rows = np.sum(seq_arr, axis=1, dtype=float)
+        print('Sums of rows: ')
+        print(sums_of_rows)
 
-        raise NotImplementedError('Implement me')
+        #raise NotImplementedError('Implement me')
 
         # Teilen Sie nun jedes Element des Arrays durch die Summe der entsprechenden
         # Zeile. Eine solche Operation laesst sich als elementweise Division zwischen
@@ -722,12 +733,15 @@ class NumPyIntro(object):
         #
         # Geben Sie die Zwischenergebnisse aus und inspizieren Sie diese auch
         # mit dem Debugger.
+        dividing_each_elem_by_rowsums = seq_arr / sums_of_rows.reshape(sums_of_rows.size, 1)
+        print('dividing each elem by rowsum: ')
+        print(dividing_each_elem_by_rowsums)
 
-        raise NotImplementedError('Implement me')
+        #raise NotImplementedError('Implement me')
 
         # Speichern Sie alle Ergebnisse und geben Sie diese als Ergebnis der
         # Funktion zurueck.
-
+        return indices_and_values, sums_of_rows, dividing_each_elem_by_rowsums
         raise NotImplementedError('Implement me')
 
     def array_distributions(self):
