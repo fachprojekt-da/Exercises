@@ -761,27 +761,38 @@ class NumPyIntro(object):
         # Runden Sie die Elemente der Arrays (ganzzahlig) und erstellen sie jeweils 
         # Histogramme. Um das Histogramm fuer rand_arr_unif zu erstellen, linearisieren
         # Sie die Matrix zunaechst. (Verwenden Sie reshape mit shape Parameter -1.)
+        rand_arr_gauss = np.around(rand_arr_gauss)
+
+        lin_rand_arr_unif = rand_arr_unif.reshape(-1)
+        lin_rand_arr_unif = np.around(lin_rand_arr_unif)
         # Das Histogramm koennen Sie dann mit der NumPy Funktion bincount berechnen.
         # Beachten Sie, dass die bincount Funktion ein Integer Array als Eingabe
         # benoetigt. Warum ist das so?
+        hist_arr_gaus = np.bincount(rand_arr_gauss.astype(int))
+        hist_arr_unif = np.bincount(lin_rand_arr_unif.astype(int))
         # Plotten Sie die Ergebnisse mit matplotlib. Verwenden Sie dazu die Methode 
         # bar_plot (unten). Da Sie im weiteren Verlauf der Uebung weitere Plots
         # erstellen muessen, schauen Sie sich die Methode bar_plot an.
+        bar_plot(None, hist_arr_unif,'Unif')
+        bar_plot(None, hist_arr_gaus, 'Gaus')
         # http://matplotlib.org/
         # http://docs.scipy.org/doc/numpy/reference/generated/numpy.around.html
         # http://docs.scipy.org/doc/numpy/reference/generated/numpy.bincount.html
         # http://docs.scipy.org/doc/numpy/reference/generated/numpy.reshape.html
 
-        raise NotImplementedError('Implement me')
+        #raise NotImplementedError('Implement me')
 
         # Bilden Sie nun die zeilenweisen Summen ueber das ndarray mit den gleichverteilten
         # Zufallszahlen (rand_arr_unif). Berechnen und visualisieren Sie das Histogramm 
         # wie zuvor. Erklaeren Sie das Ergebnis.
         # http://docs.scipy.org/doc/numpy/reference/generated/numpy.sum.html
         #
+        sums_of_rows = np.sum(rand_arr_unif, axis=1)
+        hist_sum_of_rows = np.bincount(sums_of_rows.astype(int))
+        bar_plot(None, hist_sum_of_rows, 'Sum of rows')
         # Geben Sie das Ergebnis als Rueckgabe der Funktion zurueck.
-
-        raise NotImplementedError('Implement me')
+        return hist_sum_of_rows
+        #raise NotImplementedError('Implement me')
 
 
 def bar_plot(x_values, y_values, title=None):
