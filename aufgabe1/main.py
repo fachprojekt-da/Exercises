@@ -65,11 +65,11 @@ def aufgabe1():
     # http://www.nltk.org/howto/corpus.html#categorized-corpora
     # Hilfreiche Funktionen: fileids, words 
 
-    #for val in brown_categories:
-        #print(f'Category {val}: ')
-        #print('Number of documents: ' + str(len(brown.fileids(val))))
-        #print('Number of words: ' + str(len(brown.words(categories=val))))
-        #print('\n')
+    for val in brown_categories:
+        print(f'Category {val}: ')
+        print('Number of documents: ' + str(len(brown.fileids(val))))
+        print('Number of words: ' + str(len(brown.words(categories=val))))
+        print('\n')
 
     # Visualisieren Sie die Verteilungen mit Hilfe von horizontalen bar plots.
     # http://matplotlib.org/examples/lines_bars_and_markers/barh_demo.html

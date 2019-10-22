@@ -24,7 +24,26 @@ def aufgabe2():
     # von Woertern pro Dokument aus. Bestimmen Sie auch die Standardabweichung.
     # Stellen Sie diese Statistik mit einem bar plot dar. Verwenden Sie dabei 
     # auch Fehlerbalken (siehe visualization.hbar_plot) 
-    #
+
+    for val in brown_categories:
+        print(f'Category {val}: ')
+        mean = len(brown.words(categories=val)) / len(brown.fileids(val))
+        print(mean)
+        documents = [doc for doc in brown.fileids(val)]
+        variance = sum([math.pow((len(brown.words(fileids=doc))-mean),2) for doc in documents])/len(documents)
+        standard_deviation = math.sqrt(variance)
+        print(standard_deviation)
+        print('\n')
+
+    for val in brown_categories:
+        print(f'Category {val}: ')
+        documents_length = [len(brown.words(fileids=doc)) for doc in brown.fileids(val)]
+        print(documents_length)
+        mean = np.mean(np.array(documents_length))
+        standard_deviation = np.std(np.array(documents_length))
+        print(mean)
+        print(standard_deviation)
+
     # Berechnen Sie Mittelwert und Standardabweichung jeweils:
     #
     #  - nur mit Python Funktion
