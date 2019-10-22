@@ -333,7 +333,7 @@ class PythonIntro(object):
         # Geben Sie das Generator Objekt als Ergebnis der Methode zurueck.
 
         generator_list = ('<%s, %s>' % (type_name, str(val)) for type_name, val in zip_list)
-        print('Liste mittels Generator erzeugt ' + str(list(generator_list)))
+        #print('Liste mittels Generator erzeugt ' + str(list(generator_list)))
         return generator_list
 
     def dictionaries(self, rand_list=None):
@@ -506,12 +506,9 @@ class NumPyIntro(object):
         # das Ergebnis in der Variable arr.
 
         arr = np.arange(5, 17)
-        print('Array ' + str(arr))
+        print('Liste mit Werten zwischen 5 und 17(ausschließlich): ' + str(arr))
         arr = arr.reshape((4, 3))
-        print('Array ' + str(arr))
-
-
-        #raise NotImplementedError('Implement me')
+        print('Liste in Form 4x3 Matrix: \n' + str(arr))
 
         # Mit reshape koennen Arrays mit mehreren Dimensionen auch linearisieren
         # Dabei muessen Sie beachten, ob entlang der Zeilen oder Spalten linearisiert
@@ -530,13 +527,11 @@ class NumPyIntro(object):
         # Geben Sie die Ergebnisse aus. Die Variablen werden als Ergebnis der
         # Funktion zurueckgegeben.
 
-        print('Array test_arr ' + str(test_arr))
+        print('Testliste: \n' + str(test_arr))
         arr_lin_rows = np.reshape(test_arr, -1, order='C')
-        print('Array linearisiert nach Zeile ' + str(arr_lin_rows))
+        print('Liste linearisiert nach Zeile ' + str(arr_lin_rows))
         arr_lin_cols = np.reshape(test_arr, -1, order='F')
-        print('Array linearisiert nach Spalte ' + str(arr_lin_cols))
-
-        #raise NotImplementedError('Implement me')
+        print('Liste linearisiert nach Spalte ' + str(arr_lin_cols))
 
         return arr, arr_lin_rows, arr_lin_cols
 
@@ -548,17 +543,16 @@ class NumPyIntro(object):
         if seq_arr is None:
             seq_arr = np.arange(100).reshape(10, 10)
 
-        print(seq_arr.shape)
-        print(seq_arr)
+        print('Form des Arrays: ' + str(seq_arr.shape))
+        print('Ausgabe des Arrays: \n' + str(seq_arr))
 
         # Geben Sie das Element in der dritten Zeile und fuenften Spalte als
         # Ergebnis der Funktion zurueck. Zusaetzlich koennen Sie das Ergebnis
         # ausgeben.
-        #
         # Hinweis: Schauen Sie sich dazu auch das Numpy Quickstart Tutorial an:
         # https://docs.scipy.org/doc/numpy/user/quickstart.html#indexing-slicing-and-iterating
+
         print('Element (3,5) = ' + str(seq_arr[2, 4]))
-        #raise NotImplementedError('Implement me')
         return seq_arr[2, 4]
 
     def array_slicing(self, seq_arr=None):
@@ -571,22 +565,26 @@ class NumPyIntro(object):
         # https://docs.scipy.org/doc/numpy/user/quickstart.html#indexing-slicing-and-iterating
 
         #    Geben Sie die obere (3,2) Matrix und die untere (3,3) Matrix aus.
+
         top_matrix = seq_arr[0:3, 0:2]
-        print(top_matrix)
+        print('Obere 3x2 Matrix: \n' + str(top_matrix))
         bottom_matrix = seq_arr[-3:, -3:]
-        print(bottom_matrix)
+        print('Untere 3x3 matrix: \n' + str(bottom_matrix))
 
         #    Geben Sie die 4. Zeile aus.
+
         fourth_row_matrix = seq_arr[3, :]
-        print(fourth_row_matrix)
+        print('4.Zeile der Matrix: ' + str(fourth_row_matrix))
 
         #    Geben Sie die jede ungerade Spalte aus, also Spalten 1,3,.. Verwenden
         #        sie dabei slicing mit step=2.
+
         every_odd_col_matrix = seq_arr[:, 1::2]
-        print(every_odd_col_matrix)
+        print('Jede ungerade Spalte der Matrix: \n' + str(every_odd_col_matrix))
 
         # Speichern Sie alle Zwischenergebnisse in Variablen und geben Sie diese
         # aus und in der genannten Reihenfolge als Ergebnis der Funktion zurueck.
+
         return top_matrix, bottom_matrix, fourth_row_matrix, every_odd_col_matrix
 
         #raise NotImplementedError('Implement me')
@@ -605,17 +603,21 @@ class NumPyIntro(object):
 
         #    Geben Sie die Elemente (1,3), (2,1), (3,1) mit Hilfe von Index
         #        Arrays aus.
+        # Merke: Index beginnt bei 0
+        print('Testarray lautet: \n' + str(seq_arr))
         rows = np.array([1, 2, 3], dtype=np.intp)
+        print('Zeilenindizes der Elemente: ' + str(rows))
         columns = np.array([3, 1, 1], dtype=np.intp)
+        print('Spaltenindizes der Elemente: ' + str(columns))
         three_elements_array = seq_arr[rows, columns]
-        print(three_elements_array)
+        print('Test Array mit den 3 Elementen: ' + str(three_elements_array))
 
         #    Index arrays lassen sich auch mit Slicing Operationen kombinieren
         #    Geben Sie alle Zeilen und die Spalten mit Index 2,3,6 aus.
+
         index_array_cols = np.array([2,3,6])
         two_three_six_column_array = seq_arr[:, index_array_cols]
-        print(two_three_six_column_array)
-        #raise NotImplementedError('Implement me')
+        print('Ausgabe der Matrix für alle Zeilen und Spalten (2,3,6): \n' + str(two_three_six_column_array))
 
         # Boolean Indexing:
         # Boolsche Index Arrays funktionieren als Masken, bei der an jeder Array
@@ -628,22 +630,23 @@ class NumPyIntro(object):
         # Die folgenden beiden Aufgaben bauen aufeinander auf:
         #     Setzen Sie nun alle ungeraden Elemente des ndarray seq_arr auf 0 
         #         und geben Sie das Ergebnis aus.
+
         odd_nums_to_zero_array = seq_arr
+        print('Testarray: \n' + str(odd_nums_to_zero_array))
         odd_nums_to_zero_array[seq_arr % 2 != 0] = 0
-        print('All odd values to zero:')
-        print(odd_nums_to_zero_array)
+        print('All odd values to zero: \n' + str(odd_nums_to_zero_array))
+
         #     Geben Sie dann alle Elemente zurueck die groesser als 17 und 
         #         ganzzahlig durch drei teilbar sind.
         #         http://docs.scipy.org/doc/numpy/reference/generated/numpy.logical_and.html
-        greater_seventeen_and_mod_three_array = odd_nums_to_zero_array[(odd_nums_to_zero_array > 17) & (odd_nums_to_zero_array % 3 == 0)]
-        print('All odd values to zero:')
-        print(greater_seventeen_and_mod_three_array)
 
-        #raise NotImplementedError('Implement me')
+        greater_seventeen_and_mod_three_array = odd_nums_to_zero_array[(odd_nums_to_zero_array > 17) & (odd_nums_to_zero_array % 3 == 0)]
+        print('Alle Werte mit der Bedingung (>17 & %3==0) \n' + str(greater_seventeen_and_mod_three_array))
+
         # Speichern Sie die vier Egebnisse jeweils in ein Array und geben Sie diese 
         # als Ergebnis der Funktion zurueck.
+
         return three_elements_array, two_three_six_column_array, odd_nums_to_zero_array, greater_seventeen_and_mod_three_array
-        #raise NotImplementedError('Implement me')
 
     def array_operations(self, seq_arr=None):
         print('\n[NumPyIntro::array_operations]')
@@ -657,21 +660,28 @@ class NumPyIntro(object):
         #
         # Fuehren Sie die folgenden Opertionen auf dem Array seq_arr durch.
         #    Geben Sie die Summe der ersten beiden Zeilen aus (elementweise).
+
+        print('Testliste: \n' + str(seq_arr))
         sum_of_first_two_rows = sum(seq_arr[:2, :])
-        print(sum_of_first_two_rows)
+        print('Summe der ersten beiden Zeilen \n' + str(sum_of_first_two_rows))
+
         #    Geben Sie das Produkt der ersten beiden Zeilen aus (elementweise).
+
         product_of_first_two_rows = np.multiply(seq_arr[0], seq_arr[1])
+        print('Produkt der ersten beiden Zeilen \n' + str(product_of_first_two_rows))
+
         #    Geben Sie das Skalarprodukt der ersten beiden Zeilen aus.
+
         dot_product_of_first_two_rows = np.dot(seq_arr[0], seq_arr[1])
+        print('Skalarprodukt der ersten beiden Zeilen: ' + str(dot_product_of_first_two_rows))
+
         # Verwenden Sie dazu die Operatorn +, *  und np.dot in geeigneter Weise
         # http://docs.scipy.org/doc/numpy/reference/generated/numpy.dot.html
 
-        #raise NotImplementedError('Implement me')
-
         # Speichern Sie alle Ergebnisse und geben Sie diese als Ergebnis der
         # Funktion zurueck.
+
         return sum_of_first_two_rows, product_of_first_two_rows, dot_product_of_first_two_rows
-        #raise NotImplementedError('Implement me')
 
     def array_functions(self, seq_arr=None):
         print('\n[NumPyIntro::array_functions]')
@@ -687,24 +697,19 @@ class NumPyIntro(object):
         # mit Indices gefolgt von dem Array mit Werten in einem Tuple.
         # http://docs.scipy.org/doc/numpy/reference/generated/numpy.amax.html
         # http://docs.scipy.org/doc/numpy/reference/generated/numpy.argmax.html
+
+        print('Test-Array: \n' + str(seq_arr))
         max_element_per_row = np.amax(seq_arr, axis=1)
-        print('Maximum per row: ')
-        print(max_element_per_row)
-
+        print('Maximum per row: \n' + str(max_element_per_row))
         indices_of_max = np.argmax(seq_arr, axis=1)
-        print('Indices of maximum per row: ')
-        print(indices_of_max)
+        print('Indices of maximum per row: \n' + str(indices_of_max))
         indices_and_values = indices_of_max, max_element_per_row
-
-        #raise NotImplementedError('Implement me')
 
         # Bestimmen Sie die Summen ueber die Elemente jeder Zeile.
         # Speichern Sie das Ergebnis in einer Variable.
-        sums_of_rows = np.sum(seq_arr, axis=1, dtype=float)
-        print('Sums of rows: ')
-        print(sums_of_rows)
 
-        #raise NotImplementedError('Implement me')
+        sums_of_rows = np.sum(seq_arr, axis=1, dtype=float)
+        print('Sums of rows: \n' + str(sums_of_rows))
 
         # Teilen Sie nun jedes Element des Arrays durch die Summe der entsprechenden
         # Zeile. Eine solche Operation laesst sich als elementweise Division zwischen
@@ -722,15 +727,12 @@ class NumPyIntro(object):
         # Geben Sie die Zwischenergebnisse aus und inspizieren Sie diese auch
         # mit dem Debugger.
         dividing_each_elem_by_rowsums = seq_arr / sums_of_rows.reshape(sums_of_rows.size, 1)
-        print('dividing each elem by rowsum: ')
-        print(dividing_each_elem_by_rowsums)
+        print('dividing each elem by rowsum: \n' + str(dividing_each_elem_by_rowsums))
 
-        #raise NotImplementedError('Implement me')
 
         # Speichern Sie alle Ergebnisse und geben Sie diese als Ergebnis der
         # Funktion zurueck.
         return indices_and_values, sums_of_rows, dividing_each_elem_by_rowsums
-        raise NotImplementedError('Implement me')
 
     def array_distributions(self):
         print('\n[NumPyIntro::array_distributions]')
@@ -750,7 +752,6 @@ class NumPyIntro(object):
         # Histogramme. Um das Histogramm fuer rand_arr_unif zu erstellen, linearisieren
         # Sie die Matrix zunaechst. (Verwenden Sie reshape mit shape Parameter -1.)
         rand_arr_gauss = np.around(rand_arr_gauss)
-
         lin_rand_arr_unif = rand_arr_unif.reshape(-1)
         lin_rand_arr_unif = np.around(lin_rand_arr_unif)
         # Das Histogramm koennen Sie dann mit der NumPy Funktion bincount berechnen.
@@ -768,7 +769,6 @@ class NumPyIntro(object):
         # http://docs.scipy.org/doc/numpy/reference/generated/numpy.bincount.html
         # http://docs.scipy.org/doc/numpy/reference/generated/numpy.reshape.html
 
-        #raise NotImplementedError('Implement me')
 
         # Bilden Sie nun die zeilenweisen Summen ueber das ndarray mit den gleichverteilten
         # Zufallszahlen (rand_arr_unif). Berechnen und visualisieren Sie das Histogramm 
