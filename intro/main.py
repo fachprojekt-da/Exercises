@@ -94,8 +94,6 @@ class PythonIntro(object):
             print('Objekt ist nicht im Tuple ' + str(var_tup) + ' enthalten'+ '.')
             contains_num = False
 
-        # raise NotImplementedError('Implement me')
-
         # Wichtig: string und tuple sind nicht veraenderbar (immutable). tuples
         # eignen sich somit sehr gut als Container zum uebergeben / zurueckgeben
         # von Werten in / aus Funktionen.
@@ -119,9 +117,9 @@ class PythonIntro(object):
 
         # Geben Sie nun das Ergebnis, aus der if-Abfrage oben, als Ergebnis mit
         # return zurueck
+
         print('Der boolsche Wert für die Ausgabe ist also: ' + str(contains_num) + '!')
         return contains_num
-        # raise NotImplementedError('Implement me')
 
     def sequences(self, seq_start=3, seq_end=7, seq_step=1):
         print('\n[PythonIntro::sequences]')
@@ -130,7 +128,7 @@ class PythonIntro(object):
         # man eine fortlaufende Liste von int Objekten erzeugen.
         # https://docs.python.org/2/library/functions.html#range
         test_list = list(range(seq_start, seq_end, seq_step))
-        print(test_list)
+        print('Testliste: ' + str(test_list))
 
         # Im Folgenden wird der Zugriff auf Listen geuebt. Fuer jede Aufgabe sollen
         # Sie das Ergenis in eine andere Variable schreiben, bzw. das Ergebnis
@@ -146,6 +144,17 @@ class PythonIntro(object):
         #     das erste Drittel,
         #     das zweite Drittel,
         #     das letze Drittel.
+        # https://docs.python.org/2/tutorial/introduction.html#lists
+        # https://docs.python.org/2/library/stdtypes.html#mutable-sequence-types
+        # Auf das letzte Element greifen Sie mit -1 zu.
+        #
+        # Achten Sie auf den Datentyp, den sie bei der Berechnung der Indexposition
+        # verwenden. Verwenden Sie int(), float() fuer Typecasts.
+        # https://docs.python.org/2/library/functions.html (siehe int() und float())
+        #
+        # Speichern Sie die Ergebnisse Ihrer Zugriffe jeweils als Elemente in einer
+        # Liste ab.
+
         first_list = []
         length = len(test_list)
         first_list.append(length)
@@ -178,24 +187,11 @@ class PythonIntro(object):
         first_list.append(last_third)
         print('Das letzte drittel der Liste : ' + str(first_list[-1]))
 
-        #
-        # https://docs.python.org/2/tutorial/introduction.html#lists
-        # https://docs.python.org/2/library/stdtypes.html#mutable-sequence-types
-        # Auf das letzte Element greifen Sie mit -1 zu.
-        #
-        # Achten Sie auf den Datentyp, den sie bei der Berechnung der Indexposition
-        # verwenden. Verwenden Sie int(), float() fuer Typecasts.
-        # https://docs.python.org/2/library/functions.html (siehe int() und float())
-        #
-        # Speichern Sie die Ergebnisse Ihrer Zugriffe jeweils als Elemente in einer
-        # Liste ab.
-
-        # raise NotImplementedError('Implement me')
-
         # Wenn Sie mit einzelnen Elementen eines list / tuple Objekts arbeiten
         # koennen Sie eine for Schleife verwenden.
         # https://docs.python.org/2/tutorial/controlflow.html
         # Geben Sie die Elemente von test_list einzeln in einer for-Schleife aus.
+
         print('Die Gesamte Liste hat den Inhalt: ')
         for val in test_list:
             print(val)
@@ -219,10 +215,6 @@ class PythonIntro(object):
             list_of_strings.append(content)
             print(content)
 
-        # besser:  print(f'{index}: {value}')
-
-        # raise NotImplementedError('Implement me')
-
         # Geben Sie nun *beide* Ergebnislisten mit return zurueck. Verwenden Sie dabei
         # die Reihenfolge, in der Sie die Listen erstellt haben.
         #
@@ -238,17 +230,15 @@ class PythonIntro(object):
         print("Komplexere Operationen auf Sequenzen")
         #
         # Kommen wir nun noch einemal zu dem initialen Beispiel zurueck (Methode datatypes()).
-        print(test_seq)
+        print('Ausgabe der Testsequenz: ' + str(test_seq))
         # Geben Sie nun den Inhalt des list Objekt in folgender Form in der Konsole aus:
         # [ <type: value>, ... ]
         # Also konkret fuer unser Beispiel
         # [ <int: 1>, <float: 1.0>, <string, 1.0> ]
         # Verwenden Sie dazu eine for Schleife und die Methoden type(obj).__name__, str().
         # https://docs.python.org/2/library/functions.html (Gehe zu type() sowie str() )
-        #
         # Konstruieren Sie einen string, den Sie am Ende ausgeben. Zwei strings lassen
         # sich mit + konkatenieren. SEHR SCHLECHTER STIL (siehe unten).
-        print('Test' + str(test_seq))
         seq_ausgabe = '[ '
         for val in test_seq:
             type_val_str = '<%s, %s>' % (type(val).__name__, str(val))
@@ -257,10 +247,8 @@ class PythonIntro(object):
                 seq_ausgabe += ','
             seq_ausgabe += ' '
         seq_ausgabe += ']'
-        print('Test' + str(seq_ausgabe))
-        # raise NotImplementedError('Implement me')
+        print('Richtige Formatierung des Strings: ' + str(seq_ausgabe))
 
-        #
         # Leider ist das Konkatenieren von strings mit + wahnsinnig ineffizient. Da
         # strings nicht veraenderbar sind (immutable) muss jedesmal neuer Speicher
         # reserviert werden und der Inhalt des alten Speichers kopiert werden. 
@@ -285,7 +273,8 @@ class PythonIntro(object):
         # fuer das test_seq Objekt. Verwenden Sie dabei den % Operator sowie die join Methode.
         # Achten Sie dabei auch auf Leerzeichen und Kommata.
 
-        # Geben Sie diesen string als Ergebnis der Methode zurueck.  
+        # Geben Sie diesen string als Ergebnis der Methode zurueck.
+
         string_list = list()
         index = 0
         lastindex = len(test_seq)-1
@@ -298,9 +287,9 @@ class PythonIntro(object):
             string_list.append(type_val_str)
             index += 1
         resultstring = ' '.join(string_list)
-        print(resultstring)
+        print('Die verbesserte Stringformatierung: ' + resultstring)
         return resultstring
-        #raise NotImplementedError('Implement me')
+
 
     def list_comprehension(self, test_seq=(1, 1.0, '1.0')):
         print('\n[PythonIntro::list_comprehension]')
@@ -313,23 +302,24 @@ class PythonIntro(object):
         #
         # Erstellen Sie gemaess des vorherigen Beispiels eine Liste mit Typenamen fuer
         # die Elemente in test_list. 
-        #
+
+        type_list = [type(x).__name__ for x in test_seq]
+        print('Liste mit Typnamen ' + str(type_list))
+
         # Verwenden Sie dann die zip Methode, um eine Liste von tuple Ojekten der 
         # Form [(type_name,obj),...] zu erhalten.
         # https://docs.python.org/3/library/functions.html (gehe zu zip() )
-        # 
+
+        zip_list = list(zip(type_list, test_seq))
+        print('Liste mit Tuplen ' + str(zip_list))
+
         # Verwenden Sie diese Liste mit einer list comprehension, um wieder eine Liste
         # von strings der Form <obj_type_name, obj> zu erzeugen. Das Ergbnis koennen 
         # Sie dann wieder mit string.join() erzeugen und dann mit print ausgeben.
 
-        type_list = [type(x).__name__ for x in test_seq]
-        print(type_list)
-        zip_list = list(zip(type_list, test_seq))
-        print(zip_list)
         result_list = ['<%s, %s>' % (type_name, str(val)) for type_name, val in zip_list]
-        print(result_list)
+        print('Tupelliste mit richtiger Formatierung ' + str(result_list))
         print(', '.join(result_list))
-        #raise NotImplementedError('Implement me')
 
         # Ersetzen Sie nun die eckigen Klammern Ihrer list comprehension durch runde Klammern.
         # Dabei erzeugen Sie einen Generator. Ein Generator erzeugt die Sequenz von Daten nicht
@@ -343,6 +333,7 @@ class PythonIntro(object):
         # Geben Sie das Generator Objekt als Ergebnis der Methode zurueck.
 
         generator_list = ('<%s, %s>' % (type_name, str(val)) for type_name, val in zip_list)
+        print('Liste mittels Generator erzeugt ' + str(list(generator_list)))
         return generator_list
 
     def dictionaries(self, rand_list=None):
@@ -368,12 +359,25 @@ class PythonIntro(object):
         # ganzzahlig zu runden und zu einem int zu konvertieren.
         # https://docs.python.org/3/library/functions.html#round
         # https://docs.python.org/3/library/functions.html#int
+
+        print('Randomisierte Liste ' + str(rand_list))
+        dic_list = [int(round(val)) for val in rand_list]
+        print('Liste wurde gerundet auf ' + str(dic_list))
+
         # Verwenden sie dann ein dict Object, um zu zaehlen wie oft jeder int in der 
         # Liste auftritt. Als Schluessel verwenden Sie dabei den int, als Wert die 
         # entsprechende Anzahl.
         # Sie bestimmen also ein Histogramm, das die empirische Verteilung der Daten
         # darstellt.
-        #
+
+        val_dict = {}
+        for val in dic_list:
+            if val in val_dict.keys():
+                val_dict[val] += 1
+            else:
+                val_dict[val] = 1
+        print('Key und Value Paare: ' + str(val_dict))
+
         # Geben Sie anschliessend das dict Objekt nach Schluessel sortiert in der 
         # Konsole aus. Verwenden Sie die sorted() Methode. Beachten Sie dabei,
         # dass die Schluessel-Wert Paare in einem Dictionary natuerlicher Weise 
@@ -382,22 +386,10 @@ class PythonIntro(object):
         # erzeugen.
         # https://docs.python.org/3/howto/sorting.html#sortinghowto
 
-        print(rand_list)
-        dic_list = [int(round(val)) for val in rand_list]
-        print(dic_list)
-        val_dict = {}
-        for val in dic_list:
-            if val in val_dict.keys():
-                val_dict[val] += 1
-            else:
-                val_dict[val] = 1
-        print(val_dict)
         sorted_dict = sorted(val_dict)
-        print(sorted_dict)
+        print('Liste mit sortierten Keys: ' + str(sorted_dict))
         keyvalue_list = [(key, val_dict[key]) for key in sorted_dict]
-        print('keyvaluelist ' + str(keyvalue_list))
-
-        #raise NotImplementedError('Implement me')
+        print('Key Value Liste sortiert nach Key: ' + str(keyvalue_list))
 
         # Ein fuer die Berechnung von Histogrammen besser geeignetes Dictionary bietet
         # das defaultdict
@@ -412,14 +404,11 @@ class PythonIntro(object):
         # Berechnen Sie nun das Histogramm ueber die gerundeten Werte aus rand_list 
         # mit einem defaultdict.
 
-        print('Die gerundeten Werte: ' + str(dic_list))
         val2_dict = defaultdict(int)
         for val in dic_list:
             if val in val_dict.keys():
                 val2_dict[val] += 1
-        print('Ausgabe der random Liste mit defaultdict' + str(val2_dict))
-
-        # raise NotImplementedError('Implement me')
+        print('Ausgabe der randomisierten Liste mit defaultdict: ' + str(val2_dict))
 
         # Wenn man ermitteln moechte, welcher Schluessel in einer gegebenen Menge
         # von Werten am haeufigsten ist, muss man in dem Histogramm den Schluessel zu
@@ -433,16 +422,15 @@ class PythonIntro(object):
         # https://docs.python.org/3/howto/sorting.html#key-functions
 
         sortedValue_dict = sorted(val2_dict.items(), key=itemgetter(1))
-        print('Sortierte Liste nach Wert ' + str(sortedValue_dict))
+        print('Sortierte Liste nach Wert: ' + str(sortedValue_dict))
         biggestValue = sortedValue_dict[-1]
         print('Key-Ausgabe des größten Werts: ' + str(biggestValue[0]))
 
-        #raise NotImplementedError('Implement me')
-
         # Geben Sie das defaultdict Objekt sowie den Schluessel zum groessten Wert
         # als Ergebnis der Methode zurueck.
+
         return val2_dict, biggestValue[0]
-        #raise NotImplementedError('Implement me')
+
 
 
 class NumPyIntro(object):
