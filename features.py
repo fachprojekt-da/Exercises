@@ -1,5 +1,6 @@
 import string
 import numpy as np
+from operator import itemgetter
 from collections import defaultdict
 from corpus import CorpusLoader
 from nltk.stem.porter import PorterStemmer # IGNORE:import-error
@@ -159,8 +160,16 @@ class BagOfWords(object):
                 Woerter enthaelt. Die Sortierung der Liste ist nach Haeufigkeit
                 absteigend.
         """
-        raise NotImplementedError('Implement me')
-
+        dic = defaultdict(int)
+        for word in word_list:
+            dic[word] += 1
+        sortedValue_dict = sorted(dic.items(), key=itemgetter(1), reverse=True)
+        if n_words is None:
+            most_words = sortedValue_dict
+        else:
+            most_words = sortedValue_dict[:n_words]
+        words_topn = [x for (x, y) in most_words]
+        return words_topn
     
     
 class WordListNormalizer(object):
@@ -196,11 +205,18 @@ class WordListNormalizer(object):
             
         Returns:
             word_list_filtered, word_list_stemmed: Tuple von Listen
-                Bei der ersten Liste wurden alle Filterregeln, bis auch stemming
+                Bei der ersten Liste wurden alle Filterregeln, bis auf stemming
                 angewandt. Bei der zweiten Liste wurde zusaetzlich auch stemming
                 angewandt.
         """
-        raise NotImplementedError('Implement me')
+        lowercase_list = [word.lower() for word in word_list]
+        filtered_words = [word for word in lowercase_list
+                          if word not in self.__stoplist
+                          and word not in self.__punctuation
+                          and word not in  self.__delimiters]
+        stemmed_words = [self.__stemmer.stem(word) for word in filtered_words]
+
+        return filtered_words, stemmed_words
     
 
 class IdentityFeatureTransform(object):

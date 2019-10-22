@@ -1,4 +1,7 @@
-
+from collections import defaultdict
+from operator import itemgetter
+import numpy as np
+import matplotlib.pyplot as plt
 import datetime
 import string
 from nltk.stem import PorterStemmer # IGNORE:import-error
@@ -42,12 +45,16 @@ def aufgabe1():
     
     # Geben Sie nun die Gesamtanzahl von Kategorien, Dokumenten und Woertern
     # mit print auf der Konsole aus.  
-     
-    raise NotImplementedError('Implement me')
-    
+
+
+    print(len(brown_categories))
+    print(len(brown_documents))
+    print(len(brown_words))
+
     # Geben Sie die Namen der einzelnen Kategorien aus. 
-    raise NotImplementedError('Implement me')
-     
+
+    #for val in brown_categories:
+        #print(val)
      
     # Bisher haben Sie noch keine Information ueber die Struktur des Brown
     # Corpus gewonnen, da sie jeweils die Gesamtzahl von Kategorien, Dokumenten
@@ -57,10 +64,25 @@ def aufgabe1():
     # Kategorie aus.
     # http://www.nltk.org/howto/corpus.html#categorized-corpora
     # Hilfreiche Funktionen: fileids, words 
-    #
+
+    #for val in brown_categories:
+        #print(f'Category {val}: ')
+        #print('Number of documents: ' + str(len(brown.fileids(val))))
+        #print('Number of words: ' + str(len(brown.words(categories=val))))
+        #print('\n')
+
     # Visualisieren Sie die Verteilungen mit Hilfe von horizontalen bar plots.
     # http://matplotlib.org/examples/lines_bars_and_markers/barh_demo.html
-    #
+    plt.barh(brown_categories, [len(brown.fileids(cat)) for cat in brown_categories])
+    plt.xlabel('Number of Documents')
+    plt.ylabel('Categories')
+
+    plt.figure()
+    plt.barh(brown_categories, [len(brown.words(categories=cat)) for cat in brown_categories])
+    plt.xlabel('Number of Words')
+    plt.ylabel('Categories')
+    #plt.show()
+
     # Optional: Plotten Sie die Verteilungen mit vertikalen bar plots.
     # Vermeiden Sie, dass sich die an der x-Achse aufgetragenen labels ueberlappen
     # http://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes.set_xticklabels
@@ -68,7 +90,9 @@ def aufgabe1():
     # gemeinsamen Plot dar. Verwenden Sie unterschiedliche Farben.
     # http://matplotlib.org/examples/api/barchart_demo.html
     
-    raise NotImplementedError('Implement me')
+    #plt.bar(len(brown_categories), [len(brown.fileids(cat)) for cat in brown_categories], width=0.3, color='green')
+    #plt.bar(len(brown_categories)+0.3, [len(brown.words(categories=cat)) for cat in brown_categories], width=0.3, color='blue')
+    #plt.show()
 
     
     # ********************************** ACHTUNG **************************************
@@ -115,8 +139,11 @@ def aufgabe1():
     # Implementieren Sie die (statische) Funktion BagOfWords.most_freq_words im Modul
     # features.
 
-    raise NotImplementedError('Implement me')
-    
+
+    #print(BagOfWords.most_freq_words(brown_words, 20))
+    for category in brown_categories:
+        val = BagOfWords.most_freq_words(brown.words(categories=category), 20)
+        #print(f'Category {category}: {val}')
     
     #
     # Diese Woerter sind nicht besonders charakteristisch fuer die Unterscheidung 
@@ -132,8 +159,12 @@ def aufgabe1():
     # http://docs.python.org/3/library/string.html
     #
     # Geben Sie zunaechst stopwords und Satzzeichen auf der Kommandozeile aus.
-    
-    
+
+    stopwords = CorpusLoader.stopwords_corpus()
+    list_punctuation = [a for a in string.punctuation]
+    print(stopwords)
+    print(list_punctuation)
+
     # Mit der Liste von stopwords koennen Sie noch keine grammatikalischen Varianten
     # von Woertern erfassen, die ebenfalls nicht entscheidend fuer die semantische
     # Analyse von Texten sind (zum Beispiel: walking, walked).
@@ -147,9 +178,16 @@ def aufgabe1():
     #
     # Implementieren Sie die Funktion WordListNormalizer.normalize_words im
     # features Modul.
-    
-    raise NotImplementedError('Implement me')
-    
+
+    words_normalizer = WordListNormalizer()
+    filtered_list, stemmed_list = words_normalizer.normalize_words(brown_words)
+    print(BagOfWords.most_freq_words(stemmed_list, 20))
+
+    for category in brown_categories:
+        filtered_list, stemmed_list = words_normalizer.normalize_words(brown.words(categories=category))
+        val = BagOfWords.most_freq_words(stemmed_list, 20)
+        print(f'Category {category}: {val}')
+
     
     return
 
