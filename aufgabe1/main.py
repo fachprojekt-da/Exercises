@@ -203,7 +203,6 @@ def aufgabe1():
 
     return
 
-
 if __name__ == '__main__':
     print(datetime.datetime.now())
     print('---\n')
