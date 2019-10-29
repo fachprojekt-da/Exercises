@@ -142,7 +142,24 @@ class BagOfWords(object):
                 Reihenfolge der Terme ist durch die Reihenfolge der Worter / Terme
                 im Vokabular (siehe __init__) vorgegeben.
         """
-        raise NotImplementedError('Implement me')
+        category_bow_dict = {}
+        for key in cat_word_dict.keys():
+            bow_matrix = np.array((len(cat_word_dict[key]) * 500))
+            for doc in cat_word_dict[key]:
+                value_dict = {}
+                for word in doc:
+                    if word in value_dict.keys():
+                        value_dict[word] += 1
+                    else:
+                        value_dict[word] = 1
+                for word in self.__vocabulary:
+                    indexOfValue = self.__vocabulary.index(word)
+                    if word in value_dict:
+                        bow_matrix[indexOfValue] = value_dict[word]
+                    else:
+                        bow_matrix[indexOfValue] = 0
+            bow_matrix.reshape()
+        return category_bow_dict
                 
     
     @staticmethod

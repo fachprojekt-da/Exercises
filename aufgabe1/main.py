@@ -90,7 +90,7 @@ def aufgabe1():
     plt.ylabel('Categories')
     print('Fenster müssen geschlossen werden, damit weiter kompiliert wird')
     print('\n')
-    #plt.show()
+    plt.show()
 
     # Optional: Plotten Sie die Verteilungen mit vertikalen bar plots.
     # Vermeiden Sie, dass sich die an der x-Achse aufgetragenen labels ueberlappen
@@ -192,13 +192,16 @@ def aufgabe1():
 
     words_normalizer = WordListNormalizer()
     filtered_list, stemmed_list = words_normalizer.normalize_words(brown_words)
-    print('Gesamtwörter gefiltert und gestemmt: ' + str(BagOfWords.most_freq_words(stemmed_list, 20)))
+    print('Gesamtwörter gefiltert: ' + str(BagOfWords.most_freq_words(filtered_list,20)))
+    print('Gesamtwörter gestemmt: ' + str(BagOfWords.most_freq_words(stemmed_list, 20)))
 
     print('Wörter je Kategorie gefiltert und gestemmt:')
     for category in brown_categories:
         filtered_list, stemmed_list = words_normalizer.normalize_words(brown.words(categories=category))
-        val = BagOfWords.most_freq_words(stemmed_list, 20)
-        print(f'Category {category}: {val}')
+        filteredVal = BagOfWords.most_freq_words(filtered_list, 20)
+        stemmedVal = BagOfWords.most_freq_words(stemmed_list, 20)
+        print(f'Category {category}: {filteredVal}')
+        print(f'Category {category}: {stemmedVal}')
 
 
     return

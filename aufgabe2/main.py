@@ -1,6 +1,7 @@
 import math 
 import numpy as np
 from corpus import CorpusLoader
+import matplotlib.pyplot as plt
 from features import BagOfWords, WordListNormalizer
 from visualization import hbar_plot
 import itertools
@@ -11,7 +12,7 @@ def aufgabe2():
     CorpusLoader.load()
     brown = CorpusLoader.brown_corpus()
     brown_categories = brown.categories()
-
+    brown_words = brown.words()
     # In dieser Aufgabe sollen unbekannte Dokumente zu bekannten Kategorien
     # automatisch zugeordnet werden. 
     # 
@@ -47,17 +48,32 @@ def aufgabe2():
         print('Standardabweicheung: ' + str(standard_deviation))
         print('\n')
 
+    mean_list = []
+    standard_deviation_list = []
     for val in brown_categories:
         print(f'Category {val}: ')
         documents_length = [len(brown.words(fileids=doc)) for doc in brown.fileids(val)]
         print('Länge der einzelnen Dokumente: ' + str(documents_length))
         mean = np.mean(np.array(documents_length))
+        mean_list.append(mean)
         standard_deviation = np.std(np.array(documents_length))
+        standard_deviation_list.append(standard_deviation)
         print('Mittelwert mit Numpy: ' + str(mean))
         print('Standardabweichung mit Numpy: ' + str(standard_deviation))
 
+    #Balkendiagramm (Y-Achse: Kategorien, X-Achse: Mittelwert)
+    plt.barh(brown_categories, mean_list)
+    plt.xlabel('Average')
+    plt.ylabel('Categories')
+    plt.errorbar(mean_list, brown_categories, xerr=100)
 
-    raise NotImplementedError('Implement me')
+    #Balkendiagramm(Y-Achse: Kategorien, Standardabweichung)
+    plt.figure()
+    plt.barh(brown_categories, standard_deviation_list)
+    plt.xlabel('Standard Deviation')
+    plt.ylabel('Categories')
+    plt.errorbar(standard_deviation_list, brown_categories, xerr=10)
+    #plt.show()
     
     # ********************************** ACHTUNG **************************************
     # Die nun zu implementierenden Funktionen spielen eine zentrale Rolle im weiteren 
@@ -124,8 +140,11 @@ def aufgabe2():
     # Bestimmen Sie ein Vokabular, also die typischen Woerter, fuer den Brown Corpus.
     # Berechnen Sie dazu die 500 haeufigsten Woerter (nach stemming und Filterung von
     # stopwords und Satzzeichen)
-    
-    raise NotImplementedError('Implement me')
+
+    words_normalizer = WordListNormalizer()
+    filtered_list, stemmed_list = words_normalizer.normalize_words(brown_words)
+    vocabulary = BagOfWords.most_freq_words(stemmed_list,500)
+    print('Das Vokabular: ' + str(vocabulary))
     
     
     # Berechnen Sie Bag-of-Words Repraesentationen fuer jedes Dokument des Brown Corpus.
@@ -143,8 +162,17 @@ def aufgabe2():
     #
     # Implementieren Sie die Funktion BagOfWords.category_bow_dict im Modul features.
 
-    raise NotImplementedError('Implement me')
-    
+    cat_word_dict = {}
+    for cat in brown_categories:
+        allWordsOfDoc = []
+        for dok in brown.fileids(cat):
+            filtered_list, stemmed_list = words_normalizer.normalize_words(brown.words(fileids=dok))
+            allWordsOfDoc.append(stemmed_list)
+        cat_word_dict[cat]=allWordsOfDoc
+    print(cat_word_dict.keys)
+    baggy = BagOfWords(vocabulary)
+    baggy.category_bow_dict(cat_word_dict)
+
     # Um einen Klassifikator statistisch zu evaluieren, benoetigt man eine Trainingsstichprobe
     # und eine Teststichprobe der Daten die klassifiziert werden sollen. 
     # Die Trainingsstichprobe benoetigt man zum Erstellen oder Trainieren des Klassifikators.
