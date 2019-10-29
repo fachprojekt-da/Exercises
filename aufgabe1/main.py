@@ -36,6 +36,7 @@ def aufgabe1():
     # einsortiert sind. Ein Dokument besteht aus Woertern.
     # Als naechstes sehen Sie, wie Sie auf Kategorien, Dokumente und
     # Woerter zugreifen koennen.
+
     brown = CorpusLoader.brown_corpus()
     brown_categories = brown.categories()
     brown_documents = brown.fileids()
@@ -47,15 +48,17 @@ def aufgabe1():
     # mit print auf der Konsole aus.  
 
 
-    print(len(brown_categories))
-    print(len(brown_documents))
-    print(len(brown_words))
+    print('Anzahl Kategorien: ' + str(len(brown_categories)))
+    print('Anzahl Dokumente: ' + str(len(brown_documents)))
+    print('Anzahl Wörter: ' + str(len(brown_words)))
 
     # Geben Sie die Namen der einzelnen Kategorien aus. 
 
-    #for val in brown_categories:
-        #print(val)
-     
+    print('Die Namen der Kategorien:')
+    for val in brown_categories:
+        print(val)
+    print('\n')
+
     # Bisher haben Sie noch keine Information ueber die Struktur des Brown
     # Corpus gewonnen, da sie jeweils die Gesamtzahl von Kategorien, Dokumenten
     # und Woertern ausgegeben haben.
@@ -67,20 +70,26 @@ def aufgabe1():
 
     for val in brown_categories:
         print(f'Category {val}: ')
-        print('Number of documents: ' + str(len(brown.fileids(val))))
-        print('Number of words: ' + str(len(brown.words(categories=val))))
+        print('Number of documents per category: ' + str(len(brown.fileids(val))))
+        print('Number of words per category: ' + str(len(brown.words(categories=val))))
         print('\n')
 
     # Visualisieren Sie die Verteilungen mit Hilfe von horizontalen bar plots.
     # http://matplotlib.org/examples/lines_bars_and_markers/barh_demo.html
+
+
+    #Balkendiagramm (Y-Achse: Kategorien, X-Achse: Anzahl Dokumente)
     plt.barh(brown_categories, [len(brown.fileids(cat)) for cat in brown_categories])
     plt.xlabel('Number of Documents')
     plt.ylabel('Categories')
 
+    #Balkendiagramm(Y-Achse: Kategorien, X-Achse: Anzahl Wörter)
     plt.figure()
     plt.barh(brown_categories, [len(brown.words(categories=cat)) for cat in brown_categories])
     plt.xlabel('Number of Words')
     plt.ylabel('Categories')
+    print('Fenster müssen geschlossen werden, damit weiter kompiliert wird')
+    print('\n')
     #plt.show()
 
     # Optional: Plotten Sie die Verteilungen mit vertikalen bar plots.
@@ -140,11 +149,12 @@ def aufgabe1():
     # features.
 
 
-    #print(BagOfWords.most_freq_words(brown_words, 20))
+    print('Die 20 häufigsten Wörter insgesamt: ' + str(BagOfWords.most_freq_words(brown_words, 20)))
+    print('Die 20 häufigsten Wörter pro Kategorie: ')
     for category in brown_categories:
         val = BagOfWords.most_freq_words(brown.words(categories=category), 20)
-        #print(f'Category {category}: {val}')
-    
+        print(f'Category {category}: {val}')
+    print('\n')
     #
     # Diese Woerter sind nicht besonders charakteristisch fuer die Unterscheidung 
     # verschiedener Kategorien. Daher entfernt man solche wenig aussagekraeftigen
@@ -162,8 +172,9 @@ def aufgabe1():
 
     stopwords = CorpusLoader.stopwords_corpus()
     list_punctuation = [a for a in string.punctuation]
-    print(stopwords)
-    print(list_punctuation)
+    print('Ausgabe der Stopwords: ' + str(stopwords))
+    print('Ausgabe der Satzzeichen: ' + str(list_punctuation))
+    print('\n')
 
     # Mit der Liste von stopwords koennen Sie noch keine grammatikalischen Varianten
     # von Woertern erfassen, die ebenfalls nicht entscheidend fuer die semantische
@@ -181,14 +192,15 @@ def aufgabe1():
 
     words_normalizer = WordListNormalizer()
     filtered_list, stemmed_list = words_normalizer.normalize_words(brown_words)
-    print(BagOfWords.most_freq_words(stemmed_list, 20))
+    print('Gesamtwörter gefiltert und gestemmt: ' + str(BagOfWords.most_freq_words(stemmed_list, 20)))
 
+    print('Wörter je Kategorie gefiltert und gestemmt:')
     for category in brown_categories:
         filtered_list, stemmed_list = words_normalizer.normalize_words(brown.words(categories=category))
         val = BagOfWords.most_freq_words(stemmed_list, 20)
         print(f'Category {category}: {val}')
 
-    
+
     return
 
 
