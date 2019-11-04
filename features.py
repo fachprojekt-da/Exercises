@@ -1,4 +1,5 @@
 import string
+
 import numpy as np
 from operator import itemgetter
 from collections import defaultdict
@@ -143,22 +144,16 @@ class BagOfWords(object):
                 im Vokabular (siehe __init__) vorgegeben.
         """
         category_bow_dict = {}
-        for key in cat_word_dict.keys():
-            bow_matrix = np.array((len(cat_word_dict[key]) * 500))
-            for doc in cat_word_dict[key]:
-                value_dict = {}
-                for word in doc:
-                    if word in value_dict.keys():
-                        value_dict[word] += 1
-                    else:
-                        value_dict[word] = 1
-                for word in self.__vocabulary:
-                    indexOfValue = self.__vocabulary.index(word)
-                    if word in value_dict:
-                        bow_matrix[indexOfValue] = value_dict[word]
-                    else:
-                        bow_matrix[indexOfValue] = 0
-            bow_matrix.reshape()
+        for category in cat_word_dict:
+            num_of_documents = len(cat_word_dict[category])
+            bag_vector = np.zeros((num_of_documents, len(self.__vocabulary)))
+            for row, document in enumerate(cat_word_dict[category]):
+                for word in document:
+                    for col, vocab_word in enumerate(self.__vocabulary):
+                        if word == vocab_word:
+                            bag_vector[row][col] += 1
+            category_bow_dict[category] = bag_vector
+
         return category_bow_dict
                 
     

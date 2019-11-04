@@ -163,15 +163,15 @@ def aufgabe2():
     # Implementieren Sie die Funktion BagOfWords.category_bow_dict im Modul features.
 
     cat_word_dict = {}
-    for cat in brown_categories:
-        allWordsOfDoc = []
-        for dok in brown.fileids(cat):
-            filtered_list, stemmed_list = words_normalizer.normalize_words(brown.words(fileids=dok))
-            allWordsOfDoc.append(stemmed_list)
-        cat_word_dict[cat]=allWordsOfDoc
+    for category in brown_categories:
+        words_of_all_documents = []
+        for document in brown.fileids(category):
+            filtered_list, stemmed_list = words_normalizer.normalize_words(brown.words(fileids=document))
+            words_of_all_documents.append(stemmed_list)
+        cat_word_dict[category] = words_of_all_documents
     print(cat_word_dict.keys)
-    baggy = BagOfWords(vocabulary)
-    baggy.category_bow_dict(cat_word_dict)
+    bag_of_words = BagOfWords(vocabulary)
+    category_bow_dict = bag_of_words.category_bow_dict(cat_word_dict)
 
     # Um einen Klassifikator statistisch zu evaluieren, benoetigt man eine Trainingsstichprobe
     # und eine Teststichprobe der Daten die klassifiziert werden sollen. 
