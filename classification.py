@@ -1,3 +1,4 @@
+
 import numpy as np
 import scipy.spatial.distance
 from features import BagOfWords , IdentityFeatureTransform
@@ -53,7 +54,13 @@ class KNNClassifier(object):
         if self.__train_samples is None or self.__train_labels is None:
             raise ValueError('Classifier has not been "estimated", yet!')
 
-        raise NotImplementedError('Implement me')
+        dist_bow = scipy.spatial.distance.cdist(test_samples, self.__train_samples, metric=self.__metric)
+        sorted_indices = np.argsort(dist_bow)
+        test_labels = []
+        for i in range(len(test_samples)):
+            test_labels.append(self.__train_labels[sorted_indices[i][0]])
+        test_labels = np.array(test_labels)
+        return test_labels
 
 
 

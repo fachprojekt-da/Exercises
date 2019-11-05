@@ -1,7 +1,11 @@
 import math 
 import numpy as np
+
+from classification import KNNClassifier
 from corpus import CorpusLoader
 import matplotlib.pyplot as plt
+
+from evaluation import CrossValidation
 from features import BagOfWords, WordListNormalizer
 from visualization import hbar_plot
 import itertools
@@ -38,41 +42,41 @@ def aufgabe2():
     # http://docs.scipy.org/doc/numpy/reference/generated/numpy.mean.html
     # http://docs.scipy.org/doc/numpy/reference/generated/numpy.std.html
 
-    for val in brown_categories:
-        print(f'Category {val}: ')
-        mean = len(brown.words(categories=val)) / len(brown.fileids(val))
-        print('Mittelwert: ' + str(mean))
-        documents = [doc for doc in brown.fileids(val)]
-        variance = sum([math.pow((len(brown.words(fileids=doc))-mean),2) for doc in documents])/len(documents)
-        standard_deviation = math.sqrt(variance)
-        print('Standardabweicheung: ' + str(standard_deviation))
-        print('\n')
-
-    mean_list = []
-    standard_deviation_list = []
-    for val in brown_categories:
-        print(f'Category {val}: ')
-        documents_length = [len(brown.words(fileids=doc)) for doc in brown.fileids(val)]
-        print('Länge der einzelnen Dokumente: ' + str(documents_length))
-        mean = np.mean(np.array(documents_length))
-        mean_list.append(mean)
-        standard_deviation = np.std(np.array(documents_length))
-        standard_deviation_list.append(standard_deviation)
-        print('Mittelwert mit Numpy: ' + str(mean))
-        print('Standardabweichung mit Numpy: ' + str(standard_deviation))
+    # for val in brown_categories:
+    #     print(f'Category {val}: ')
+    #     mean = len(brown.words(categories=val)) / len(brown.fileids(val))
+    #     print('Mittelwert: ' + str(mean))
+    #     documents = [doc for doc in brown.fileids(val)]
+    #     variance = sum([math.pow((len(brown.words(fileids=doc))-mean),2) for doc in documents])/len(documents)
+    #     standard_deviation = math.sqrt(variance)
+    #     print('Standardabweicheung: ' + str(standard_deviation))
+    #     print('\n')
+    #
+    # mean_list = []
+    # standard_deviation_list = []
+    # for val in brown_categories:
+    #     print(f'Category {val}: ')
+    #     documents_length = [len(brown.words(fileids=doc)) for doc in brown.fileids(val)]
+    #     print('Länge der einzelnen Dokumente: ' + str(documents_length))
+    #     mean = np.mean(np.array(documents_length))
+    #     mean_list.append(mean)
+    #     standard_deviation = np.std(np.array(documents_length))
+    #     standard_deviation_list.append(standard_deviation)
+    #     print('Mittelwert mit Numpy: ' + str(mean))
+    #     print('Standardabweichung mit Numpy: ' + str(standard_deviation))
 
     #Balkendiagramm (Y-Achse: Kategorien, X-Achse: Mittelwert)
-    plt.barh(brown_categories, mean_list)
-    plt.xlabel('Average')
-    plt.ylabel('Categories')
-    plt.errorbar(mean_list, brown_categories, xerr=100)
+    # plt.barh(brown_categories, mean_list)
+    # plt.xlabel('Average')
+    # plt.ylabel('Categories')
+    # plt.errorbar(mean_list, brown_categories, xerr=100)
 
     #Balkendiagramm(Y-Achse: Kategorien, Standardabweichung)
-    plt.figure()
-    plt.barh(brown_categories, standard_deviation_list)
-    plt.xlabel('Standard Deviation')
-    plt.ylabel('Categories')
-    plt.errorbar(standard_deviation_list, brown_categories, xerr=10)
+    # plt.figure()
+    # plt.barh(brown_categories, standard_deviation_list)
+    # plt.xlabel('Standard Deviation')
+    # plt.ylabel('Categories')
+    # plt.errorbar(standard_deviation_list, brown_categories, xerr=10)
     #plt.show()
     
     # ********************************** ACHTUNG **************************************
@@ -186,7 +190,6 @@ def aufgabe2():
     # Dies simuliert man mit der Teststichprobe. Da auch fuer jedes Beispiel aus der Teststichprobe
     # die Klassenzugehoerigkeit bekannt ist, kann man am Ende die Klassifikationsergebnisse mit
     # den wahren Klassenlabels (aus der Teststichprobe) vergleichen und eine Fehlerrate angeben. 
-     
 
     # In dem gegebenen Brown Corpus ist keine Aufteilung in Trainings und Testdaten vorgegeben.
     #
@@ -210,8 +213,8 @@ def aufgabe2():
     # Hinweis: Vollziehen Sie nach, wie die Klasse CrossValidation im evaluation Modul
     # funktioniert. Wenn Sie moechten, koennen die Klasse zur Aufteilung der Daten
     # verwenden.
-    
-    raise NotImplementedError('Implement me')
+    cross_validation = CrossValidation(category_bow_dict, 5)
+    train_samples, train_labels, test_samples, test_labels = cross_validation.corpus_fold(1)
     
     
     # Klassifizieren Sie nun alle Dokumente der Teststichprobe nach dem Prinzip des k-naechste-
@@ -242,8 +245,10 @@ def aufgabe2():
     # zu testen, finden Sie zwei Unit-Test Methoden test_nn und test_knn in dem Modul 
     # test.classification_test
     # 
-    
-    raise NotImplementedError('Implement me')
+    nn_classifier = KNNClassifier(k_neighbors=1, metric='euclidean')
+    nn_classifier.estimate(train_samples, train_labels)
+    result_labels = nn_classifier.classify(test_samples)
+    print(result_labels)
     
     # Nachdem Sie mit dem KNNClassifier fuer jedes Testbeispiel ein Klassenlabel geschaetzt haben,
     # koennen Sie dieses mit dem tatsaechlichen Klassenlabel vergleichen. Dieses koennen Sie wie
