@@ -144,12 +144,14 @@ class ClassificationEvaluator(object):
             n_wrong: Anzahl falsch klassifizierter Testbeispiele
             n_samples: Gesamtzahl von Testbeispielen
         """
+        print(self.__result_vector)
         if mask is None:
-            mask = np.ones(len(self.__result_vector))
+            mask = np.ones(len(self.__result_vector), dtype=np.bool)
         mask_result_vector = self.__result_vector[mask]
+        print(mask_result_vector)
         n_correct = np.sum(mask_result_vector)
-        n_wrong = len(self.__result_vector) - n_correct
-        n_samples = self.__estimated_labels.shape[0]
+        n_wrong = len(mask_result_vector) - n_correct
+        n_samples = len(mask_result_vector)
         error_rate = n_wrong/n_samples *100
         return error_rate, n_wrong, n_samples
 

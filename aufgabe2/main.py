@@ -5,7 +5,7 @@ from classification import KNNClassifier
 from corpus import CorpusLoader
 import matplotlib.pyplot as plt
 
-from evaluation import CrossValidation
+from evaluation import CrossValidation, ClassificationEvaluator
 from features import BagOfWords, WordListNormalizer
 from visualization import hbar_plot
 import itertools
@@ -148,8 +148,6 @@ def aufgabe2():
     words_normalizer = WordListNormalizer()
     filtered_list, stemmed_list = words_normalizer.normalize_words(brown_words)
     vocabulary = BagOfWords.most_freq_words(stemmed_list,500)
-    print('Das Vokabular: ' + str(vocabulary))
-    
     
     # Berechnen Sie Bag-of-Words Repraesentationen fuer jedes Dokument des Brown Corpus.
     # Verwenden Sie absolute Frequenzen.
@@ -173,7 +171,6 @@ def aufgabe2():
             filtered_list, stemmed_list = words_normalizer.normalize_words(brown.words(fileids=document))
             words_of_all_documents.append(stemmed_list)
         cat_word_dict[category] = words_of_all_documents
-    print(cat_word_dict.keys)
     bag_of_words = BagOfWords(vocabulary)
     category_bow_dict = bag_of_words.category_bow_dict(cat_word_dict)
 
@@ -258,9 +255,14 @@ def aufgabe2():
     # Implementieren Sie dazu die Klasse ClassificationEvaluator im evaluation Modul. 
     #
     # Warum ist diese Aufteilung der Daten in Training und Test problematisch? Was sagen die Ergebnisse aus?
-    
-    raise NotImplementedError('Implement me')
-    
-    
+    class_eval = ClassificationEvaluator(result_labels, test_labels)
+    error_rate = class_eval.error_rate()
+    category_error_rates = class_eval.category_error_rates()
+    print('Gesamtfehlerrate: ')
+    print(error_rate)
+    print('Fehlerraten pro Kategorie: ')
+    print(category_error_rates)
+
+
 if __name__ == '__main__':
     aufgabe2()
