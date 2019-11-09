@@ -56,11 +56,8 @@ class KNNClassifier(object):
 
         dist_bow = scipy.spatial.distance.cdist(test_samples, self.__train_samples, metric=self.__metric)
         sorted_indices = np.argsort(dist_bow)
-        test_labels = []
-        for i in range(len(test_samples)):
-            test_labels.append(self.__train_labels[sorted_indices[i][0]])
-        test_labels = np.array(test_labels)
-        return test_labels
+        test_label_index = sorted_indices[:, [0]].reshape(-1)
+        return self.__train_labels[test_label_index]
 
 
 
