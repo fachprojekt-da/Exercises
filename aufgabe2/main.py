@@ -42,11 +42,11 @@ def aufgabe2():
     # http://docs.scipy.org/doc/numpy/reference/generated/numpy.mean.html
     # http://docs.scipy.org/doc/numpy/reference/generated/numpy.std.html
 
-    # for val in brown_categories:
-    #     print(f'Category {val}: ')
-    #     mean = len(brown.words(categories=val)) / len(brown.fileids(val))
+    # for category in brown_categories:
+    #     print(f'Category {category}: ')
+    #     mean = len(brown.words(categories=category)) / len(brown.fileids(category))
     #     print('Mittelwert: ' + str(mean))
-    #     documents = [doc for doc in brown.fileids(val)]
+    #     documents = [doc for doc in brown.fileids(category)]
     #     variance = sum([math.pow((len(brown.words(fileids=doc))-mean),2) for doc in documents])/len(documents)
     #     standard_deviation = math.sqrt(variance)
     #     print('Standardabweicheung: ' + str(standard_deviation))
@@ -54,9 +54,9 @@ def aufgabe2():
     #
     # mean_list = []
     # standard_deviation_list = []
-    # for val in brown_categories:
-    #     print(f'Category {val}: ')
-    #     documents_length = [len(brown.words(fileids=doc)) for doc in brown.fileids(val)]
+    # for category in brown_categories:
+    #     print(f'Category {category}: ')
+    #     documents_length = [len(brown.words(fileids=doc)) for doc in brown.fileids(category)]
     #     print('Länge der einzelnen Dokumente: ' + str(documents_length))
     #     mean = np.mean(np.array(documents_length))
     #     mean_list.append(mean)

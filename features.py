@@ -122,6 +122,7 @@ class BagOfWords(object):
                 Optional, verwendet absolute Gewichtung als Default.
         """
         self.__vocabulary = vocabulary
+        self.__lookup_table = {vocabulary_word: index for index, vocabulary_word in enumerate(vocabulary)}
         self.__term_weighting = term_weighting
         
     def category_bow_dict(self, cat_word_dict):
@@ -146,13 +147,12 @@ class BagOfWords(object):
         category_bow_dict = {}
         for category in cat_word_dict:
             num_of_documents = len(cat_word_dict[category])
-            bag_vector = np.zeros((num_of_documents, len(self.__vocabulary)))
+            bow_vector = np.zeros((num_of_documents, len(self.__vocabulary)))
             for row, document in enumerate(cat_word_dict[category]):
                 for word in document:
-                    for col, vocab_word in enumerate(self.__vocabulary):
-                        if word == vocab_word:
-                            bag_vector[row][col] += 1
-            category_bow_dict[category] = bag_vector
+                    if word in self.__lookup_table:
+                        bow_vector[row][self.__lookup_table[word]] += 1
+            category_bow_dict[category] = bow_vector
 
         return category_bow_dict
                 
