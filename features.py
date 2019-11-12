@@ -55,7 +55,7 @@ class RelativeTermFrequencies(object):
             bow_mat: Numpy ndarray (d x t) mit *gewichteten* Bag-of-Words Frequenzen 
                 je Dokument (zeilenweise).
         """
-        raise NotImplementedError('Implement me')
+        return bow_mat/bow_mat.sum(axis=1)[:, None]
     
     def __repr__(self):
         """Ueberschreibt interne Funktion der Klasse object. Die Funktion wird
@@ -81,7 +81,8 @@ class RelativeInverseDocumentWordFrequecies(object):
                 Siehe Beschreibung des Parameters cat_word_dict in der Methode
                 BagOfWords.category_bow_dict.
         """
-        raise NotImplementedError('Implement me')
+        self.__vocabulary = vocabulary
+        self.__category_wordlists_dict = category_wordlists_dict
     
 
     def weighting(self, bow_mat):
@@ -94,8 +95,30 @@ class RelativeInverseDocumentWordFrequecies(object):
         Returns:
             bow_mat: Numpy ndarray (d x t) mit *gewichteten* Bag-of-Words Frequenzen 
                 je Dokument (zeilenweise).
-        """
-        raise NotImplementedError('Implement me')
+        """        bow = BagOfWords(self.__vocabulary)
+        cat_bow_dict = bow.category_bow_dict(self.__category_wordlists_dict)
+        values_cat_bow = cat_bow_dict.values()
+        stacked_mat = np.vstack(tuple(values_cat_bow))
+        print(stacked_mat)
+        stacked_mat_bool = stacked_mat > 0
+        print(stacked_mat)
+        np.sum(stacked_mat)
+        for rowindex, row in enumerate(bow_mat):
+            for colindex, col in enumerate(row):
+                num_of_docs = stacked_mat.shape[0]
+                print('Anzahl Dokumente: ' + str(num_of_docs))
+                num_of_words_doc = np.sum(stacked_mat[rowindex])
+                print('Anzahl Wörter pro Dokument ' + str(num_of_words_doc))
+                num_of_word_in_doc = stacked_mat[rowindex][colindex]
+                print('Anzahl Wort in Dokument ' + str(num_of_word_in_doc))
+                col_sums = np.sum(stacked_mat_bool, axis=0)
+                num_of_docs_with_word = col_sums[colindex]
+                print('Anzahl Dokumente mit dem Wort ' + str(num_of_docs_with_word))
+                print('Formel ' + str((num_of_word_in_doc/num_of_words_doc)*np.log(num_of_docs/num_of_docs_with_word)))
+                bow_mat[rowindex][colindex] = (num_of_word_in_doc/num_of_words_doc)*np.log(num_of_docs/num_of_docs_with_word)
+        print(bow_mat)
+        return bow_mat
+
 
     def __repr__(self):
         """Ueberschreibt interne Funktion der Klasse object. Die Funktion wird
