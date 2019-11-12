@@ -1,6 +1,10 @@
 import itertools
+
+from classification import KNNClassifier
 from corpus import CorpusLoader
+from evaluation import CrossValidation
 from visualization import bar_plot
+from features import BagOfWords, WordListNormalizer, RelativeTermFrequencies, AbsoluteTermFrequencies
 
 
 def aufgabe3():
@@ -36,6 +40,8 @@ def aufgabe3():
     
     CorpusLoader.load()
     brown = CorpusLoader.brown_corpus()
+    brown_categories = brown.categories()
+    brown_words = brown.words()
     
     # Um eine willkuerliche Aufteilung der Daten in Training und Test zu vermeiden,
     # (machen Sie sich bewusst warum das problematisch ist)
@@ -66,7 +72,25 @@ def aufgabe3():
     # Fuer das Verstaendnis der Implementierung der Klasse CrossValidator ist der Eclipse-
     # Debugger sehr hilfreich.
 
-    raise NotImplementedError('Implement me')
+    words_normalizer = WordListNormalizer()
+    filtered_list, stemmed_list = words_normalizer.normalize_words(brown_words)
+    vocabulary = BagOfWords.most_freq_words(stemmed_list, 500)
+
+    cat_word_dict = {}
+    for category in brown_categories:
+        words_of_all_documents = []
+        for document in brown.fileids(category):
+            filtered_list, stemmed_list = words_normalizer.normalize_words(brown.words(fileids=document))
+            words_of_all_documents.append(stemmed_list)
+        cat_word_dict[category] = words_of_all_documents
+    bag_of_words = BagOfWords(vocabulary)
+    category_bow_dict = bag_of_words.category_bow_dict(cat_word_dict)
+
+    cross_validation = CrossValidation(category_bow_dict, 5)
+
+    knn_classifier = KNNClassifier(k_neighbors=3, metric='euclidean')
+
+    cross_validation.validate(knn_classifier)
 
     # Bag-of-Words Weighting 
     #
@@ -88,7 +112,8 @@ def aufgabe3():
     # dem die Bag-of-Words Histogramme gebildet werden. Ein Bag-of-Words Histogramm
     # wird daher auch als Term-Vektor bezeichnet.
 
-    raise NotImplementedError('Implement me')
+    print(AbsoluteTermFrequencies.weighting(category_bow_dict['fiction']))
+    print(RelativeTermFrequencies.weighting(category_bow_dict['fiction']))
     
     # Zusaetzlich kann man noch die inverse Frequenz von Dokumenten beruecksichtigen
     # in denen ein bestimmter Term vorkommt. Diese Normalisierung wird als  
@@ -103,7 +128,7 @@ def aufgabe3():
     # Zusammen mit der relativen Term Gewichtung ergibt sich die so genannte
     # "term frequency inverse document frequency"
     #
-    #                            Anzahl von term in document                       Anzahl Dokumente
+    #                            Anzahl von 'term' in document                       Anzahl Dokumente
     # tfidf( term, document )  = ----------------------------   x   log ( ---------------------------------- ) 
     #                             Anzahl Woerter in document              Anzahl Dokumente die term enthalten
     #
