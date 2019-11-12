@@ -54,10 +54,17 @@ class KNNClassifier(object):
         if self.__train_samples is None or self.__train_labels is None:
             raise ValueError('Classifier has not been "estimated", yet!')
 
+        k = self.__k_neighbors
         dist_bow = scipy.spatial.distance.cdist(test_samples, self.__train_samples, metric=self.__metric)
         sorted_indices = np.argsort(dist_bow)
-        test_label_index = sorted_indices[:, [0]].reshape(-1)
-        return self.__train_labels[test_label_index]
+        test_label_index = sorted_indices[:, :k].reshape(-1)
+        train_label_index = self.__train_labels[test_label_index]
+        reshaped_train_label_index = train_label_index.reshape(len(test_samples),k)
+        result_list = []
+        for row in reshaped_train_label_index:
+            most_freq_label = BagOfWords.most_freq_words(row, 1)
+            result_list.append(most_freq_label)
+        return np.array(result_list).reshape(len(test_samples),1)
 
 
 
