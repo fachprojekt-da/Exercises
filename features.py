@@ -95,27 +95,41 @@ class RelativeInverseDocumentWordFrequecies(object):
         Returns:
             bow_mat: Numpy ndarray (d x t) mit *gewichteten* Bag-of-Words Frequenzen 
                 je Dokument (zeilenweise).
-        """        bow = BagOfWords(self.__vocabulary)
+        """
+        bow = BagOfWords(self.__vocabulary)
         cat_bow_dict = bow.category_bow_dict(self.__category_wordlists_dict)
         values_cat_bow = cat_bow_dict.values()
         stacked_mat = np.vstack(tuple(values_cat_bow))
         print(stacked_mat)
         stacked_mat_bool = stacked_mat > 0
-        print(stacked_mat)
-        np.sum(stacked_mat)
+        num_of_docs = stacked_mat.shape[0]
+        print('Anzahl Dokumente: ' + str(num_of_docs))
+
         for rowindex, row in enumerate(bow_mat):
+            num_of_words_doc = np.sum(bow_mat[rowindex])
+            print(num_of_words_doc)
             for colindex, col in enumerate(row):
-                num_of_docs = stacked_mat.shape[0]
-                print('Anzahl Dokumente: ' + str(num_of_docs))
-                num_of_words_doc = np.sum(stacked_mat[rowindex])
+
+                print('colindex' + str(colindex))
+                num_of_words_doc = np.sum(bow_mat[rowindex])
+                print(num_of_words_doc)
                 print('Anzahl Wörter pro Dokument ' + str(num_of_words_doc))
-                num_of_word_in_doc = stacked_mat[rowindex][colindex]
+
+                num_of_word_in_doc = bow_mat[rowindex][colindex]
                 print('Anzahl Wort in Dokument ' + str(num_of_word_in_doc))
+
                 col_sums = np.sum(stacked_mat_bool, axis=0)
                 num_of_docs_with_word = col_sums[colindex]
                 print('Anzahl Dokumente mit dem Wort ' + str(num_of_docs_with_word))
-                print('Formel ' + str((num_of_word_in_doc/num_of_words_doc)*np.log(num_of_docs/num_of_docs_with_word)))
-                bow_mat[rowindex][colindex] = (num_of_word_in_doc/num_of_words_doc)*np.log(num_of_docs/num_of_docs_with_word)
+               # print('Formel ' + str((term_freq * inv_doc_freq)))
+
+                term_freq = (num_of_word_in_doc / num_of_words_doc)
+                print(term_freq)
+                inv_doc_freq= np.log(num_of_docs/float(num_of_docs_with_word))
+                print('inv_doc_freq:')
+                print(inv_doc_freq)
+
+                bow_mat[rowindex][colindex] = term_freq * inv_doc_freq
         print(bow_mat)
         return bow_mat
 

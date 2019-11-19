@@ -37,7 +37,7 @@ class CrossValidation(object):
             feature_transform.estimate(train_bow, train_labels)
             train_feat = feature_transform.transform(train_bow)
             test_feat = feature_transform.transform(test_bow)
-            classifier.estimate(train_feat, train_labels)#
+            classifier.estimate(train_feat, train_labels)
             estimated_test_labels = classifier.classify(test_feat)
             classifier_eval = ClassificationEvaluator(estimated_test_labels, test_labels)
             crossval_overall_list.append(list(classifier_eval.error_rate()))

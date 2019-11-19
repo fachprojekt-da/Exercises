@@ -101,8 +101,7 @@ class TermFrequenciesTest(unittest.TestCase):
         self.__bow_mat_long = np.array([[ 1., 0., 2., 5., 1., 0., 1.],
                                         [ 3., 2., 0., 2., 1., 0., 0.]])
         self.__bow_mat_short = np.array([[ 1., 6., 0., 1., 0., 2., 0.]])
-    
-    @unittest.skip('')
+
     def test_relative_term_frequencies(self):
         term_freq = RelativeTermFrequencies()
         bow_weighted_long = term_freq.weighting(self.__bow_mat_long)
@@ -113,8 +112,7 @@ class TermFrequenciesTest(unittest.TestCase):
 
         bow_weighted_short_ref = np.array([[ 0.1, 0.6, 0., 0.1, 0., 0.2, 0. ]])     
         np.testing.assert_equal(bow_weighted_short, bow_weighted_short_ref)
-    
-    @unittest.skip('')
+
     def test_inverse_document_frequencies(self):
         vocabulary = BagOfWordsTest.vocabulary()
         cat_wordlist_dict = BagOfWordsTest.cat_wordlist_dict()
@@ -122,18 +120,17 @@ class TermFrequenciesTest(unittest.TestCase):
                                                       cat_wordlist_dict)
         self.assertEqual(self.__bow_mat_short.shape[1], len(vocabulary))
         bow_weighted_short = tfidf.weighting(self.__bow_mat_short)
-        bow_weighted_short_ref = np.array([[ 0.01335314, 0.08011884, 0., 0., 0.,
-                                             0.27725887, 0.]])
+        bow_weighted_short_ref = np.array([[ 0., 0., 0., 0.01335314, 0.,
+                                             0.1386294, 0.]])
         np.testing.assert_almost_equal(bow_weighted_short, bow_weighted_short_ref)
 
         self.assertEqual(self.__bow_mat_long.shape[1], len(vocabulary))
         bow_weighted_long = tfidf.weighting(self.__bow_mat_long)
-        bow_weighted_long_ref = np.array([[ 0.01335314, 0., 0., 0., 0.02876821,
-                                            0., 0.04700036],
-                                          [ 0.05007427, 0.03338285, 0., 0.,
-                                           0.03596026, 0., 0.]])
+        bow_weighted_long_ref = np.array([[ 0., 0., 0., 0.0667657,
+                                            0.01335314, 0., 0.06931471],
+                                          [ 0., 0., 0., 0.03338285,
+                                           0.01669142, 0., 0.]])
         np.testing.assert_almost_equal(bow_weighted_long, bow_weighted_long_ref)
-
 class TopicFeatureTransformTest(unittest.TestCase):
 
     def setUp(self):
