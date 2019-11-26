@@ -83,6 +83,15 @@ class RelativeInverseDocumentWordFrequecies(object):
         """
         self.__vocabulary = vocabulary
         self.__category_wordlists_dict = category_wordlists_dict
+        bow = BagOfWords(self.__vocabulary)
+        cat_bow_dict = bow.category_bow_dict(self.__category_wordlists_dict)
+        values_cat_bow = cat_bow_dict.values()
+        stacked_mat = np.vstack(tuple(values_cat_bow))
+        #  print(stacked_mat)
+        stacked_mat_bool = stacked_mat > 0
+        self.__num_of_docs = stacked_mat.shape[0]
+        # print('Anzahl Dokumente: ' + str(num_of_docs))
+        self.__col_sums = np.sum(stacked_mat_bool, axis=0)
     
 
     def weighting(self, bow_mat):
@@ -96,28 +105,15 @@ class RelativeInverseDocumentWordFrequecies(object):
             bow_mat: Numpy ndarray (d x t) mit *gewichteten* Bag-of-Words Frequenzen 
                 je Dokument (zeilenweise).
         """
-        bow = BagOfWords(self.__vocabulary)
-        cat_bow_dict = bow.category_bow_dict(self.__category_wordlists_dict)
-        values_cat_bow = cat_bow_dict.values()
-        stacked_mat = np.vstack(tuple(values_cat_bow))
-        print(stacked_mat)
-        stacked_mat_bool = stacked_mat > 0
-        num_of_docs = stacked_mat.shape[0]
-        print('Anzahl Dokumente: ' + str(num_of_docs))
 
-        for rowindex, row in enumerate(bow_mat):
-            num_of_words_doc = np.sum(bow_mat[rowindex])
-            print('Anzahl Wörter pro Dokument ' + str(num_of_words_doc))
-            for colindex, col in enumerate(row):
-                num_of_word_in_doc = bow_mat[rowindex][colindex]
-                print('Anzahl Wort in Dokument ' + str(num_of_word_in_doc))
-                col_sums = np.sum(stacked_mat_bool, axis=0)
-                num_of_docs_with_word = col_sums[colindex]
+        weights = self.__num_of_docs / self.__col_sums
+        weights = np.log(weights)
 
-                term_freq = (num_of_word_in_doc / num_of_words_doc)
-                inv_doc_freq= np.log(num_of_docs/float(num_of_docs_with_word))
-                bow_mat[rowindex][colindex] = term_freq * inv_doc_freq
-        return bow_mat
+
+        res = RelativeTermFrequencies.weighting(bow_mat)
+        res = res * weights
+
+        return res
 
 
     def __repr__(self):
