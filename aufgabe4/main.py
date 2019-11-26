@@ -60,7 +60,15 @@ def aufgabe4():
     #
     # Optional: Verwenden Sie Unterraeume mit Dimensionen 3, 2 und 1. Transformieren
     # und plotten Sie die Daten.
-    #
+
+    #pca_example_1d = PCAExample(samples, target_dim=1)
+    #pca_example_1d.plot_subspace(limits=limits_samples, color='g', linewidth=0.01, alpha=0.3, ellipsoid=False)
+    #samples_1d = pca_example_1d.transform_samples(samples)
+    #fig = plt.figure()
+    #ax = fig.add_subplot(111)
+    #PCAExample.plot_sample_data(samples_1d, ax=ax)
+    #PCAExample.set_axis_limits(ax, limits=((-10, 10), (-10, 10)))
+
     # Optional: Generieren und transformieren Sie weitere 3D Beispieldaten. Benutzen Sie 
     # dabei auch andere Parameter fuer die Normalverteilung.
     #
@@ -87,9 +95,10 @@ def aufgabe4():
     # (hoechstens zur Kontrolle, achten Sie dabei auf den "bias" Parameter)
     # Verwenden Sie bei der Berechnung keine Schleifen, sondern nur Matrixoperationen.
     # Erklaeren Sie die Vorgehensweise.
-    
-    raise NotImplementedError('Implement me')
-    
+
+    samples_mean = np.sum(samples_2d, axis=0) / n_samples
+    X = samples_2d - samples_mean
+    samples_2d_cov = np.dot(X.T, X) / n_samples
     
     #
     # Latent Semantic Indexing

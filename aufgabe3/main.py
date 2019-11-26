@@ -88,7 +88,7 @@ def aufgabe3():
 
     cross_validation = CrossValidation(category_bow_dict, 5)
 
-    knn_classifier = KNNClassifier(k_neighbors=3, metric='euclidean')
+    knn_classifier = KNNClassifier(k_neighbors=4, metric='cityblock')
 
     cross_validation.validate(knn_classifier)
 
