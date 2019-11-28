@@ -4,8 +4,7 @@ from classification import KNNClassifier
 from corpus import CorpusLoader
 from evaluation import CrossValidation
 from visualization import bar_plot
-from features import BagOfWords, WordListNormalizer, RelativeTermFrequencies, AbsoluteTermFrequencies, \
-    RelativeInverseDocumentWordFrequecies
+from features import BagOfWords, WordListNormalizer, RelativeTermFrequencies, AbsoluteTermFrequencies
 
 
 def aufgabe3():
@@ -75,7 +74,7 @@ def aufgabe3():
 
     words_normalizer = WordListNormalizer()
     filtered_list, stemmed_list = words_normalizer.normalize_words(brown_words)
-    vocabulary = BagOfWords.most_freq_words(stemmed_list, 2000)
+    vocabulary = BagOfWords.most_freq_words(stemmed_list, 500)
 
     cat_word_dict = {}
     for category in brown_categories:
@@ -85,14 +84,13 @@ def aufgabe3():
             words_of_all_documents.append(stemmed_list)
         cat_word_dict[category] = words_of_all_documents
     bag_of_words = BagOfWords(vocabulary)
-
     category_bow_dict = bag_of_words.category_bow_dict(cat_word_dict)
 
     cross_validation = CrossValidation(category_bow_dict, 5)
 
-    knn_classifier = KNNClassifier(k_neighbors=3, metric='cityblock')
+    knn_classifier = KNNClassifier(k_neighbors=4, metric='cityblock')
 
-    overall_abs_results, class_abs_results = cross_validation.validate(knn_classifier)
+    cross_validation.validate(knn_classifier)
 
     # Bag-of-Words Weighting 
     #
@@ -114,8 +112,8 @@ def aufgabe3():
     # dem die Bag-of-Words Histogramme gebildet werden. Ein Bag-of-Words Histogramm
     # wird daher auch als Term-Vektor bezeichnet.
 
-    #print(AbsoluteTermFrequencies.weighting(category_bow_dict['fiction']))
-    #print(RelativeTermFrequencies.weighting(category_bow_dict['fiction']))
+    print(AbsoluteTermFrequencies.weighting(category_bow_dict['fiction']))
+    print(RelativeTermFrequencies.weighting(category_bow_dict['fiction']))
     
     # Zusaetzlich kann man noch die inverse Frequenz von Dokumenten beruecksichtigen
     # in denen ein bestimmter Term vorkommt. Diese Normalisierung wird als  
@@ -147,37 +145,8 @@ def aufgabe3():
     # sich dazu die Verteilungen der Anzahl Woerter und Dokumente je Kategorie aus aufgabe1
     # an. In wie weit ist eine Interpretation moeglich? 
 
-    category_bow_dict_relative = {}
-    for category in category_bow_dict:
-        category_bow_dict_relative[category] = RelativeTermFrequencies.weighting(category_bow_dict[category])
-
-    tf_idf = RelativeInverseDocumentWordFrequecies(vocabulary, cat_word_dict)
-
-    for category in category_bow_dict:
-        category_bow_dict[category] = tf_idf.weighting(category_bow_dict[category])
-
-
-    print('ABS: ')
-    print(overall_abs_results)
-    print(class_abs_results)
-    print('\n')
-
-    cross_validation = CrossValidation(category_bow_dict_relative, 5)
-    knn_classifier = KNNClassifier(k_neighbors=3, metric='cityblock')
-    overall_relative_results, class_relative_results = cross_validation.validate(knn_classifier)
-    print('RELATIVE results:')
-    print(overall_relative_results)
-    print(class_relative_results)
-    print('\n')
-
-
-    cross_validation = CrossValidation(category_bow_dict, 5)
-    knn_classifier = KNNClassifier(k_neighbors=3, metric='cityblock')
-    overall_tfidf_results, class_tfidf_results = cross_validation.validate(knn_classifier)
-    print('TFIDF results:')
-    print(overall_tfidf_results)
-    print(class_tfidf_results)
-
+    raise NotImplementedError('Implement me')
+    
     
     # Evaluieren Sie die beste Klassifikationsleistung   
     #
@@ -199,7 +168,7 @@ def aufgabe3():
     #
     # Erklaeren Sie den Effekt zwischen Gewichtungsschema und Distanzfunktion.
 
-
+    raise NotImplementedError('Implement me')
 
 
 if __name__ == '__main__':

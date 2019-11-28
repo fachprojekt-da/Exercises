@@ -19,10 +19,16 @@ class PCAExample(object):
             raise ValueError('Invalid target dimension')
         
         self.__sub_origin, self.__sub_var, self.__sub_vs = self.__estimate_subspace(samples)
-        
+        self.__mean = samples.mean()
+
         # Implementieren Sie die Dimensionsreduktion
         if target_dim != samples.shape[1]:
-            raise NotImplementedError('Implement me')
+            print(self.__sub_vs)
+            self.__sub_vs = self.__sub_vs[:, :target_dim]
+            self.__sub_var = self.__sub_var[:target_dim]
+            print(samples)
+            print(self.__sub_vs)
+
         
     def __estimate_subspace(self, samples):
         """Statistische Berechnung des Unterraums.
@@ -31,9 +37,9 @@ class PCAExample(object):
             samples: ndarray mit Trainingsdaten (zeilenweise).
         
         Returns: (Ergaenzen Sie die Dokumentation)
-            sub_origin:
-            sub_var:
-            sub_vs:
+            sub_origin: Ursprung des Unterraums
+            sub_var: Eigenwerte
+            sub_vs: Eigenvektoren
         """
         n_samples = float(samples.shape[0])
         # Mittelwert der Stichprobe
@@ -63,8 +69,8 @@ class PCAExample(object):
             raise ValueError('Samples dimension does not match vector space transformation matrix')
         
         # Ueberlegen Sie, wie man die gesamte samples Matrix in einem transformiert (ohne Schleife)
-        
-        raise NotImplementedError('Implement me')
+
+        return np.dot(samples-self.__mean, self.__sub_vs)
 
 
     def plot_subspace(self, limits, color, linewidth, alpha, ellipsoid=True, coord_system=True):
@@ -104,7 +110,7 @@ class PCAExample(object):
             yy = samples[:, 1]
             zz = samples[:, 2]
             ax.scatter(xx, yy, zz, color=color, marker='o', alpha=1.0)
-        
+
         if annotations is not None:
             for sample, annotation in zip(samples, annotations):
                 sample_tup = tuple(sample)

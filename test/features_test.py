@@ -149,7 +149,6 @@ class TopicFeatureTransformTest(unittest.TestCase):
                                         [0, 0, 5],
                                         [5, 5, 0],
                                         [0, 5, 5]])
-    @unittest.skip('')
     def test_estimate(self):
         T_mat_ref = np.array([[-0.41334067, 0.8048751, 0.42582339],
                               [-0.76349026, -0.05150169, -0.64376254],
@@ -173,8 +172,7 @@ class TopicFeatureTransformTest(unittest.TestCase):
         S_inv_mat = feature_trans._TopicFeatureTransform__S_inv  # IGNORE:protected-access
         np.testing.assert_array_almost_equal(T_mat, T_mat_ref[:, :2])
         np.testing.assert_array_almost_equal(S_inv_mat, S_inv_mat_ref[:2, :2])
-    
-    @unittest.skip('')
+
     def test_transform(self):
         feature_trans = TopicFeatureTransform(topic_dim=2)
         feature_trans.estimate(self.__train_samples, train_labels=None)
