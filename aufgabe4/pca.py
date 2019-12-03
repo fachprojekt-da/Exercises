@@ -23,11 +23,8 @@ class PCAExample(object):
 
         # Implementieren Sie die Dimensionsreduktion
         if target_dim != samples.shape[1]:
-            print(self.__sub_vs)
             self.__sub_vs = self.__sub_vs[:, :target_dim]
             self.__sub_var = self.__sub_var[:target_dim]
-            print(samples)
-            print(self.__sub_vs)
 
         
     def __estimate_subspace(self, samples):

@@ -3,7 +3,10 @@ from aufgabe4.pca import PCAExample
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D  # IGNORE:unused-import
 import numpy as np
-from features import WordListNormalizer, BagOfWords
+
+from classification import KNNClassifier
+from evaluation import CrossValidation
+from features import WordListNormalizer, BagOfWords, TopicFeatureTransform
 import itertools
 from corpus import CorpusLoader
 
@@ -46,7 +49,7 @@ def aufgabe4():
     # statistisch geschaetzt. Der Vektorraum wird beispielhaft visualisiert.
     pca_example = PCAExample(samples, target_dim=3)
     pca_example.plot_subspace(limits=limits_samples, color='r', linewidth=0.05, alpha=0.3)
-    plt.show()
+    #plt.show()
 
     # Nun wird die Dimension des Unterraums reduziert. 
     # Implementieren Sie die Reduktion im Konstruktor von PCAExample. Der neue 
@@ -80,7 +83,7 @@ def aufgabe4():
     PCAExample.plot_sample_data(samples_2d, ax=ax)
     PCAExample.set_axis_limits(ax, limits=((-10, 10), (-10, 10)))
 
-    plt.show()
+    #plt.show()
         
     # Berechnen Sie nun die Kovarianzmatrix der transformierten Daten.
     # Welche Eigenschaften hat diese Matrix? (Dimension, etc.)
@@ -99,6 +102,7 @@ def aufgabe4():
     samples_mean = np.sum(samples_2d, axis=0) / n_samples
     X = samples_2d - samples_mean
     samples_2d_cov = np.dot(X.T, X) / n_samples
+    print(samples_2d_cov)
     
     #
     # Latent Semantic Indexing
@@ -133,7 +137,12 @@ def aufgabe4():
     # Aus der Singulaerwertzerlegung (Formel oben) ergibt sich, wie man einen Topic-
     # Raum statistisch aus Beispieldaten schaetzt. Um den Topic-Raum aber mit unbekannten Daten
     # zu verwenden, muessen diese in den Topic-Raum transformiert werden. 
-    # Stellen Sie dazu die obige Formel nach D um. Die zu transformierenden Bag-of-Words
+    # Stellen Sie dazu die obige Formel nach D um.
+    #
+    #   D    =    X'    *    T    *   S^-1
+    # d x m     d x t     t x m     m x m
+    #
+    # Die zu transformierenden Bag-of-Words
     # Repaesentationen koennen dann fuer X eingesetzt werden. Dabei ist wichtig zu
     # beachten:
     # Die Spaltenvektoren in T sind orthonormal (zueinander) T' * T = I
@@ -143,7 +152,9 @@ def aufgabe4():
     #
     # Ueberlegen Sie wie die Transponierte einer Matrix gebildet wird und was das
     # fuer eine Matrix bedeutet, deren Eintraege nur auf der Hauptdiagonalen von
-    # 0 verschieden sind.
+    #
+    # Antwort: Die Matrix wird an der Hauptdiagonalen gespiegelt, bzw. die Zeilen und Spalten werden
+    #          vertauscht. Das bedeutet für die Hauptdiagonale, dass sie bei jeder Transponierung gleich bleibt
     #
     # Erlaeutern Sie die Funktion der einzelnen Matrizen in der sich ergebenden
     # Transformationsvorschrift. 
@@ -152,7 +163,10 @@ def aufgabe4():
       
     # Das Schaetzen eines Topic-Raums soll an folgendem einfachen Beispiel veranschaulicht
     # werden. Sei dazu bow_train eine Dokument-Term Matrix mit 9 Dokumenten und 3 Terms.
-    # Welcher Zusammenhang zwischen den Terms faellt Ihnen auf? 
+    # Welcher Zusammenhang zwischen den Terms faellt Ihnen auf?
+    #
+    # Antwort: Der zweite Term scheint nicht besonders topic bezogen und kommt in jedem Dokument mind. 1 mal vor
+    # die anderen beiden Terms sind dagegen eher topic bezogen, vor allem das dritte
     bow_train = np.array([[2, 5, 0],
                           [4, 1, 0],
                           [3, 3, 1],
@@ -170,22 +184,24 @@ def aufgabe4():
     print(T)
     print('Matrix S, Singulaerwerte zu den Vektoren des Topic Raums') 
     print(S)
-    print('Matrix D, Koeffizienten der Termvektoren in bof im Topic Raum')
+    print('Matrix D, Koeffizienten der Termvektoren in bof Topic Raum')
     print(D_.T)
     
     # Transformieren Sie nun die folgenden Termvektoren in den Topic Raum
     # Was erwarten Sie fuer die Topic Zugehoerigkeiten?
     
     bow_test = np.array([[5, 0, 0],
-                     [0, 5, 0],
-                     [0, 0, 5],
-                     [5, 5, 0],
-                     [0, 5, 5]])
-    raise NotImplementedError('Implement me')
+                         [0, 5, 0],
+                         [0, 0, 5],
+                         [5, 5, 0],
+                         [0, 5, 5]])
+    coefficients = np.dot(np.dot(bow_test, T), np.linalg.inv(S))
+    print(coefficients)
     
     #
     # Warum lassen sich die Koeffizienten der Termvektoren so schwer interpretieren?
-    # 
+    # Antwort: extrem kleine Werte -> besser: visualisieren
+    #
     # Um eine bessere Vorstellung von der Bedeutung der einzelnen Topics zu bekommen,
     # plotten Sie die Bag-of-Words Repraesentationen sowie die Topic-Koeffizienten der 
     # Trainingsdaten (bow_train) und der Testdaten (bow_test) in verschiedenen Farben.
@@ -198,9 +214,22 @@ def aufgabe4():
     # werden. Zum Erstellen der Plots orientieren Sie sich an den entsprechenden 
     # Funktionen aus dem Beispiel zur Hauptkomponentenanalyse (oben). Schauen Sie sich 
     # auch deren weitere Parameter (und zusaetzlich vorhandene Hilfsfunktionen) an. 
-    
-    raise NotImplementedError('Implement me')
-    
+
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    annotations_D_test = PCAExample.samples_coordinate_annotations(bow_test)
+    annotations_D_train = PCAExample.samples_coordinate_annotations(bow_train)
+    PCAExample.plot_sample_data(D_.T, ax=ax, annotations=annotations_D_train, color='r')
+    PCAExample.plot_sample_data(coefficients, ax=ax, annotations=annotations_D_test, color='b')
+    PCAExample.set_axis_limits(ax, limits=((-1,1),(-1,1),(-1,1)))
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    PCAExample.plot_sample_data(bow_train, ax=ax, color='b', annotations=annotations_D_train)
+    PCAExample.plot_sample_data(bow_test, ax=ax, color='r', annotations=annotations_D_test)
+    PCAExample.set_axis_limits(ax, limits=((0,10),(0,10),(0,10)))
+
     #
     # Fuehren Sie nun eine Dimensionsreduktion der Trainings und Testdaten auf zwei 
     # Dimensionen durch und plotten Sie die Topic-Koeffizienten (inkl. Bag-of-Words 
@@ -211,10 +240,18 @@ def aufgabe4():
     # und plotten Sie die Koeffizienten inkl. deren Bag-of-Words Annotationen. 
     #
     
-    raise NotImplementedError('Implement me')
-    
-    
-    
+    T_2d = T[:, :2]
+    S_2d = S[:2, :2]
+    D_2d_test = np.dot(np.dot(bow_test, T_2d), np.linalg.inv(S_2d))
+    D_2d_train = np.dot(np.dot(bow_train, T_2d), np.linalg.inv(S_2d))
+    ax = fig.add_subplot(111)
+    annotations_D_test = PCAExample.samples_coordinate_annotations(bow_test)
+    annotations_D_train = PCAExample.samples_coordinate_annotations(bow_train)
+    PCAExample.plot_sample_data(D_2d_train, ax=ax, annotations=annotations_D_train, color='r')
+    PCAExample.plot_sample_data(D_2d_test, ax=ax, annotations=annotations_D_test, color='b')
+    PCAExample.set_axis_limits(ax, limits=((-0.75, 0.75), (-0.75, 0.75)))
+    plt.show()
+
     
     #
     # Integrieren Sie nun die Topic-Raum Modellierung mittels Singulaerwertzerlegung 
@@ -238,9 +275,33 @@ def aufgabe4():
 
     CorpusLoader.load()
     brown = CorpusLoader.brown_corpus()
+    brown_categories = brown.categories()
+    brown_words = brown.words()
     
-    raise NotImplementedError('Implement me')
-    
-    
+    words_normalizer = WordListNormalizer()
+    filtered_list, stemmed_list = words_normalizer.normalize_words(brown_words)
+    vocabulary = BagOfWords.most_freq_words(stemmed_list, 500)
+
+    cat_word_dict = {}
+    for category in brown_categories:
+        words_of_all_documents = []
+        for document in brown.fileids(category):
+            filtered_list, stemmed_list = words_normalizer.normalize_words(brown.words(fileids=document))
+            words_of_all_documents.append(stemmed_list)
+        cat_word_dict[category] = words_of_all_documents
+    bag_of_words = BagOfWords(vocabulary)
+    category_bow_dict = bag_of_words.category_bow_dict(cat_word_dict)
+
+    cross_validation = CrossValidation(category_bow_dict, 5)
+
+    knn_classifier = KNNClassifier(k_neighbors=4, metric='cosine')
+
+    topic_feature_transform = TopicFeatureTransform(topic_dim=25)
+
+    overall_result, class_result = cross_validation.validate(knn_classifier, feature_transform=topic_feature_transform)
+
+    print(overall_result)
+    print(class_result)
+
 if __name__ == '__main__':
     aufgabe4()
