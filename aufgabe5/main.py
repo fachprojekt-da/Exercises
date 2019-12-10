@@ -3,6 +3,7 @@ import numpy as np
 import scipy.signal
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
+import matplotlib.colors as colors
 import PIL.Image as Image
 import matplotlib
 
@@ -50,15 +51,18 @@ def aufgabe6():
     # her:
     #
     # Bag-of-Words               Bag-of-Features
-    # Wort                  ->   
-    # typische Wortstaemme  ->   
+    # Wort                  ->   Punkte im Cluster
+    # typische Wortstaemme  ->   lokale Bilddeskriptoren bzw Clusterzentroiden
     #
     #
-    raise NotImplementedError('Implement me')
+    # -> Ein Visual Word ist ein Bereich aus Pixeln eines Bildes, aus dem sich Informationen, wie ein bestimmtes Merkmal
+    # dieses Bereichs, herleiten lassen.
+    #
+    # -> Ein Visual Vocabulary ist die Menge aller Visual Words, die in dem Bild vorkommen.
     #
     # Welche Rolle spielt die Anordung der lokalen Bilddeskriptoren im regelmaessigen
     # Grid?
-    #
+    # -> Erkennung von Kanten und damit der Abgrenzung zu einzelnen Wörtern und Buchstaben
     
 
 
@@ -83,10 +87,19 @@ def aufgabe6():
     # Berechnen Sie die Kreuzkorrelation des Signals 
     # 0 0 0 1 2 3 4 5 0 0 9 3 0 0
     # mit der Maske 
-    # -1 0 1 
+    # -1 0 1
+    # -> Ergebnis:
+    crosscor = np.correlate([0, 0, 0, 1, 2, 3, 4, 5, 0, 0, 9, 3, 0, 0], [-1, 0, 1], mode="full")
+    crosscor2 = np.correlate([0, 0, 0, 1, 2, 3, 4, 5, 0, 0, 9, 3, 0, 0], [-1, 0, 1], mode="same")
+    crosscor3 = np.correlate([0, 0, 0, 1, 2, 3, 4, 5, 0, 0, 9, 3, 0, 0], [-1, 0, 1])
+    print(str(crosscor))
+    print(str(crosscor2))
+    print(str(crosscor3))
     # Wie kann man die Randfaelle behandeln?
+    # -> Je nach Positionierung der Maske (siehe Modi full, same und normal)
     # Diskutieren Sie Eigenschaften und Funktion des Filters (Hochpass).
-    raise NotImplementedError('Implement me')
+    # -> Filter soll nur gravierende Veränderungen zulassen (z.B. von schwarz auf weiß) und weniger bedeutsame
+    #   Veränderungen werden ignoriert (große Helligkeitsunterschiede)
     
     #
     # Der Operator laesst sich auf zweidimensionale diskrete Signale verallgemeinern.
@@ -96,17 +109,26 @@ def aufgabe6():
     # [ -1 0 1] und [1 1 1] gebildet werden koennen. Es resultiert der sogenannte
     # Prewitt Operator.
     #
-    raise NotImplementedError('Implement me')
+    # [-1 0 1].T * [1 1 1] = [ [-1 -1 -1]
+    #                          [0  0  0]
+    #                          [1  1  1] ]
+    # und für horizontale Kanten dann transponieren
     #
     # In der Praxis konstruiert man den Operator haeufig mit dem Tiefpass Filter
     # [1 2 1]
     # Dabei ergibt sich der Sobel Operator. 
     # Berechnen Sie beide Masken des Sobel Operators. 
     # Diskutieren Sie den Unterschied zwischen Prewitt und Sobel.
-    raise NotImplementedError('Implement me')
     #
-    
-    # 
+    #
+    # [-1 0 1].T * [1 2 1] = [ [-1 -2 -1]
+    #                          [0  0  0]
+    #                          [1  2  1] ]
+    # und für horizontale Kanten dann transponieren
+    #
+    # -> Der Sobel Operator gewichtet die mittleren Werte der Maske höher und der Prewitt Operator gewichtet die
+    # Grauwerte gar nicht
+    #
     # An folgendem Dokumentenabbild sollen der Sobel-Operator, lokale Bilddeskriptoren
     # und Bag-of-Features Repraesentionen erprobt werden. Es stehen zwei Versionen
     # zur Verfuegung. 2700270_small.png ist fuer eine performantere Ausfuehrung geeignet.
@@ -114,14 +136,13 @@ def aufgabe6():
     # sichtbar werden. Bedenken Sie, dass bei der Verwendung von 2700270.png unter
     # Umstaenden die Deskriptorparameter (siehe unten) angepasst werden muessen.
     #
-    document_image_filename = '2700270_small.png'
+    document_image_filename = '2700270.png'
     image = Image.open(document_image_filename)
     # Fuer spaeter folgende Verarbeitungsschritte muss das Bild mit float32-Werten vorliegen. 
     im_arr = np.asarray(image, dtype='float32')
     # Die colormap legt fest wie die Intensitaetswerte interpretiert werden.
     plt.imshow(im_arr, cmap=cm.get_cmap('Greys_r'))
-    plt.show()
-    
+    #plt.show()
     #
     # Berechnen Sie das Ergebnis des Sobel-Operators mit der horizontalen und
     # vertikalen Maske. Visualisieren Sie die Ergebnisse und achten Sie
@@ -131,39 +152,80 @@ def aufgabe6():
     # http://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.correlate2d.html
     # verwenden. 
     #
-    
-    raise NotImplementedError('Implement me')
-    
+
+    sobel_horizontal = np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]])
+    sobel_vertical = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]])
+    filtered_horizontal = scipy.signal.correlate2d(im_arr, sobel_horizontal, mode="same")
+    filtered_vertical = scipy.signal.correlate2d(im_arr, sobel_vertical, mode="same")
+    filtered_both = scipy.signal.correlate2d(filtered_horizontal, sobel_vertical, mode="same")
+    plt.imshow(filtered_horizontal, cmap=cm.get_cmap('Greys_r'))
+    #plt.show()
+    plt.imshow(filtered_both, cmap=cm.get_cmap('Greys_r'))
+    #plt.show()
+
     #
     # Berechnen Sie nun die (approx.) Gradienten Magnituden und Orientierungen.
     # Visualisierung der Magnituden: 
     #
     #  - Normalisieren Sie die Werte in das Intervall [0, 1] 
-    # 
+
+    im_arr = im_arr - np.amin(im_arr)
+    im_arr = im_arr / np.amax(im_arr)
+    print(im_arr)
+
     # Visualisierung der Orientierungen. Dabei Verwenden wir den HSV Farbraum
     # http://de.wikipedia.org/wiki/HSV-Farbraum
     #
     # Erlaeutern Sie warum dieser Farbraum dafuer besonders geeignet ist.
+    # -> In diesem Farbraum befindet sich der Hellwert, der in einem Intervall von Null bis Eins gemessen werden kann,
+    #   das hilft uns, bei den normalisierten Werten
     #
     # - Berechnen Sie die Orientierungen im Bogenmass. Verwenden Sie dabei
-    #   numpy.arctan2 
+    #   numpy.arctan2
     #   http://docs.scipy.org/doc/numpy/reference/generated/numpy.arctan2.html
+
+    orientation = np.arctan2(filtered_horizontal, filtered_vertical)
+    magnitude = np.sqrt(np.square(filtered_vertical) + np.square(filtered_horizontal))
+
     # - Normalisieren Sie die Orientierungen im Bogenmass in das Intervall [0, 1]
+
+    orientation = orientation - np.amin(orientation)
+    orientation_normalized = orientation / np.amax(orientation)
+
+    magnitude = magnitude - np.amin(magnitude)
+    magnitude_normalized = magnitude / np.amax(magnitude)
+
+
     # - Erstellen Sie ein NumPy Array der Form (M,N,3) wobei M die Anzahl Zeilen 
     #   und N die Anzahl Spalten bezeichnet. Setzen Sie alle Werte auf 1. Verwenden
     #   Sie eine float Datentyp.
     #   http://docs.scipy.org/doc/numpy/reference/generated/numpy.ones.html
+
+    tensor = np.ones((3311, 2035, 3), dtype=float)
+    tensor_magnitude = np.ones((3311, 2035, 3), dtype=float)
+
     # - Schreiben Sie die normalisierten Orientierungen in den ersten Kanal des 
     #   zuvor erstellen Arrays. Indizieren Sie das Array dazu mit [:,:,0].
+
+    tensor[:, :, 0] = orientation_normalized
+    tensor_magnitude[:, :, 0] = magnitude_normalized
+
     # - Konvertieren Sie das Bild aus dem HSV Farbraum in den RGB Farbraum. Dieser
     #   Farbraum wird standardmaessig in matplotlib verwendet.
     #   http://de.wikipedia.org/wiki/RGB-Farbraum
     #   Verwenden Sie fuer die Konvertierung die Funktion
     #   http://matplotlib.org/api/colors_api.html#matplotlib.colors.hsv_to_rgb
+
+    rgb_tensor = matplotlib.colors.hsv_to_rgb(tensor)
+    rgb_tensor_magnitude = matplotlib.colors.hsv_to_rgb(tensor_magnitude)
+
     # - Visualisieren Sie das RGB Bild
     #
 
-    raise NotImplementedError('Implement me')
+    plt.imshow(rgb_tensor, cmap=cm.get_cmap('Greys_r'))
+    plt.show()
+    plt.imshow(rgb_tensor_magnitude, cmap=cm.get_cmap('Greys_r'))
+    plt.show()
     
     #
     # Erstellen Sie abschliessend eine gemeinsame Visulisierung der Magnituden 
@@ -176,10 +238,7 @@ def aufgabe6():
     # Erklaeren Sie wie sowohl die Magnituden als auch die Orientierungen an jedem
     # Bildpunkt sichtbar gemacht werden.
     #
-    
-    raise NotImplementedError('Implement me')
-    
-    
+    # -----------------------------------
     #
     # Basierend auf den Bildgradienten koennen nun Bilddeskriptoren berechnet werden.
     # Der SIFT Deskriptor basiert auf lokalen Gradientenhistogrammen. Um die Gradienten
@@ -216,7 +275,6 @@ def aufgabe6():
 
     pickle_densesift_fn = '2700270-small_dense-%d_sift-%d_descriptors.p' % (step_size, cell_size)
     frames, desc = pickle.load(open(pickle_densesift_fn, 'rb'))
-
 
     # 
     # Um eine Bag-of-Features Repraesentation des Bilds zu erstellen, wird ein
@@ -282,7 +340,7 @@ def aufgabe6():
     # Testdatensatz zu quantsieren, steht die Methode scipy.cluster.vq.vq zur 
     # Verfuegung.
     #
-    
+    #-----------------------------------------------------------------------------------------------------------
     #
     # Bag-of-Features Repraesentation eines Bildes
     # Bisher haben wir die Visual Words bestimmt, die in unserm Bild vorkommen
@@ -294,7 +352,10 @@ def aufgabe6():
     # Eingabedaten vorkommen.
     # http://docs.scipy.org/doc/numpy/reference/generated/numpy.bincount.html
     
-    raise NotImplementedError('Implement me')
+    count = np.bincount(labels)
+    print(count)
+    plt.hist(count)
+    plt.show()
     
     #
     # Plotten Sie die Bag-of-Features Repraesentation nun.
@@ -371,7 +432,7 @@ def aufgabe6():
     plt.close()
 
 
-raise NotImplementedError('Implement me')
+#raise NotImplementedError('Implement me')
 
 
 if __name__ == '__main__':
