@@ -1,11 +1,12 @@
 # pylint: disable=no-member
+import math
 import numpy as np
 import scipy.signal
+import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import matplotlib.colors as colors
 import PIL.Image as Image
-import matplotlib
 
 import pickle as pickle
 from scipy.cluster.vq import kmeans2
@@ -366,7 +367,7 @@ def aufgabe6():
     # sich auf die einzelnen Balken beziehen. Uebergeben Sie diesen Objekten den
     # Farbwert indem Sie 'set_color(color)' aufrufen. 
     #
-    raise NotImplementedError('Implement me')
+
     
     
     #
@@ -410,17 +411,56 @@ def aufgabe6():
     # - numpy.permutation 
     #
     # Welche Codebuchgroesse ist fuer die gegebene Verteilung von Daten geeignet?
-    
-    raise NotImplementedError('Implement me')
-    
-    #
-    # Plotten Sie nun das Ergebnis der Clusteranalyse. Faerben Sie dazu die
-    # Datenpunkte entsprechend ihrer Clusterzugehoerigkeit.
-    # Zeichnen Sie auch die Centroiden mit ein.
-    #    
 
-    raise NotImplementedError('Implement me')
-    
+    def kmeans_lloyd(k):
+        clusters = {}
+        converged = False
+        for i in range(k):
+            centroid = tuple(np.random.permutation(samples)[i, :])
+            clusters[centroid] = []
+        iter = 0
+        while iter < 40:
+            for sample in samples:
+                min_dist = math.inf
+                closest_centroid = None
+                for center in clusters:
+                    dist_centroid_to_sample = np.linalg.norm(np.array(center) - sample.T)
+                    if dist_centroid_to_sample < min_dist:
+                        min_dist = dist_centroid_to_sample
+                        closest_centroid = center
+                clusters[closest_centroid].append(sample)
+
+            for centroid in clusters:
+                new_centroid = np.array(clusters[centroid]).mean(axis=0)
+                clusters[centroid] = clusters.pop(centroid)
+                if abs(centroid[0] - new_centroid[0]) < 0.4 and abs(centroid[1] - new_centroid[1]) < 0.4:
+                    converged = True
+                else:
+                    converged = False
+            iter += 1
+        return clusters
+
+        #
+        # Plotten Sie nun das Ergebnis der Clusteranalyse. Faerben Sie dazu die
+        # Datenpunkte entsprechend ihrer Clusterzugehoerigkeit.
+        # Zeichnen Sie auch die Centroiden mit ein.
+        #
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    clusters = kmeans_lloyd(3)
+    colors = ['r', 'b', 'g']
+    for i, centroid in enumerate(clusters):
+        xx = []
+        yy = []
+        for sample in clusters[centroid]:
+            x, y = sample
+            xx.append(x)
+            yy.append(y)
+        ax.scatter(xx, yy, color=colors[i], marker='o', alpha=1.0)
+
+    ax.set_aspect('equal')
+    plt.show()
     #
     # Variieren Sie nun die Groesse des Codebuchs. Diskutieren Sie Ihre Beobachtungen.
     #
