@@ -136,7 +136,7 @@ def aufgabe6():
     # sichtbar werden. Bedenken Sie, dass bei der Verwendung von 2700270.png unter
     # Umstaenden die Deskriptorparameter (siehe unten) angepasst werden muessen.
     #
-    document_image_filename = '2700270.png'
+    document_image_filename = '2700270_small.png'
     image = Image.open(document_image_filename)
     # Fuer spaeter folgende Verarbeitungsschritte muss das Bild mit float32-Werten vorliegen. 
     im_arr = np.asarray(image, dtype='float32')
@@ -201,8 +201,8 @@ def aufgabe6():
     #   Sie eine float Datentyp.
     #   http://docs.scipy.org/doc/numpy/reference/generated/numpy.ones.html
 
-    tensor = np.ones((3311, 2035, 3), dtype=float)
-    tensor_magnitude = np.ones((3311, 2035, 3), dtype=float)
+    tensor = np.ones((im_arr.shape[0], im_arr.shape[1], 3), dtype=float)
+    tensor_magnitude = np.ones((im_arr.shape[0], im_arr.shape[1], 3), dtype=float)
 
     # - Schreiben Sie die normalisierten Orientierungen in den ersten Kanal des 
     #   zuvor erstellen Arrays. Indizieren Sie das Array dazu mit [:,:,0].
@@ -351,12 +351,9 @@ def aufgabe6():
     # maessig enthaelt es nur Eintraege fuer die Visual Word Indizes, die in den
     # Eingabedaten vorkommen.
     # http://docs.scipy.org/doc/numpy/reference/generated/numpy.bincount.html
-    
+
     count = np.bincount(labels)
-    print(count)
-    plt.hist(count)
-    plt.show()
-    
+
     #
     # Plotten Sie die Bag-of-Features Repraesentation nun.
     # Benuzten Sie dazu einen Bar Plot. Faerben sie die einzelnen Balken entsprechend
@@ -366,8 +363,12 @@ def aufgabe6():
     # sich auf die einzelnen Balken beziehen. Uebergeben Sie diesen Objekten den
     # Farbwert indem Sie 'set_color(color)' aufrufen. 
     #
-    raise NotImplementedError('Implement me')
-    
+    x = np.arange(len(count))
+    bar_list = plt.bar(x, count)
+    for label, bar in enumerate(bar_list):
+        color = colormap(label / len(bar_list))
+        bar.set_color(color)
+    plt.show()
     
     #
     # Llody's Algorithmus zum Clustern von Daten
